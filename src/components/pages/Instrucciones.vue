@@ -86,10 +86,7 @@
                 <span>Refresh form</span>
               </v-tooltip>
             </v-slide-x-reverse-transition>
-            <v-btn 
-            color="primary"  
-            @click="submit"
-            to="pregunta1">Iniciar</v-btn>
+            <v-btn color="primary" flat @click="submit">Iniciar</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
