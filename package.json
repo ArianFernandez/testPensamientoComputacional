@@ -10,7 +10,8 @@
     "start": "node server.js"
   },
   "engines": {
-    "node": "14.17.5"
+    "node": "14.x",
+    "npm": "6.x"
   },
   "dependencies": {
     "@mdi/font": "^5.6.55",
