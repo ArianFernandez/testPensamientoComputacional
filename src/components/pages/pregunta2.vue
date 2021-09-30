@@ -1,17 +1,15 @@
 <template>
-
     <v-container
       class="grey lighten-5 mb-6"
     >
-    <meta http-equiv="Content-Security-Policy" content="style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;">
-      <v-card
+          <v-card
     color="grey lighten-4"
     flat
     tile
   >
     <v-toolbar dense>
 
-      <v-toolbar-title>El lunes, Pacman y la Carita Feliz tienen examen de matemática. Traza un camino para que ambos lleguen a tiempo al colegio. </v-toolbar-title>
+      <v-toolbar-title>Al siguiente día, Pacman y la Carita Feliz tienen examen de Lenguaje, pero Pacman recordó que había olvidado recoger su libro en su casa; por lo que ambos retornan a su casa. Traza un camino para que ambos lleguen a tiempo al colegio luego de recoger la tarea de Pacman</v-toolbar-title>
 
       <v-spacer></v-spacer>
     </v-toolbar>
@@ -113,31 +111,10 @@
             >
               Start
             </v-btn>
-  <!-- <v-simple-table>
-    <template v-slot:default>
-      <thead>
-        <tr>
-          <th class="text-left">
-            Name
-          </th>
-          <th class="text-left">
-            Calories
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="item in desserts"
-          :key="item.name"
-        >
-          <td>{{ item.name }}</td>
-          <td>{{ item.calories }}</td>
-        </tr>
-      </tbody>
-    </template>
-  </v-simple-table> -->
-            <v-btn color="primary" @click="submit">Siguiente</v-btn>
+    <h1>{{conexiones}}</h1>
+    <h1>{{errores}}</h1>
 
+            <v-btn color="primary" @click="submit">Siguiente</v-btn>
 
         </v-card>
       </v-col>
@@ -169,7 +146,6 @@ await doc.loadInfo();
 
 function generateTargets() {
   const circles = [
-
     {x:200,y:50,id:112,color:'blue',con:{3:5}},
     {x:400,y:100,id:2,color:'green',con:{112:10,3:1,5:1,6:3}},
     {x:600,y:100,id:3,color:'green',con:{112:5,2:1,4:1,10:10}},
@@ -244,6 +220,7 @@ export default {
       console.log("C1",this.t1);
       if(this.t1.id == 111 && this.fin == false && this.validarT==true){
           this.inicio=true
+          
       }
       
 
@@ -269,10 +246,6 @@ export default {
       const pos = e.target.getStage().getPointerPosition();
       const lastLine = this.connections[this.connections.length - 1];
       lastLine.points = [lastLine.points[0], lastLine.points[1], pos.x, pos.y];
-    },
-    submit () {
-      window.location.href = '/escenario1/pregunta2/' + this.id
-
     },
     handleMouseUp(e) {
       if(this.inicio == false && this.fin == true){
@@ -402,8 +375,7 @@ export default {
       });
 
        doc.loadInfo();
-       
-       const sheet2 =   doc.sheetsByTitle[this.id]
+       const sheet2 =   doc.sheetsByTitle['Ar22Un']
 
         const moreRows =  sheet2.addRows(this.respuestas)
         console.log(moreRows)
@@ -429,6 +401,10 @@ export default {
         this.pesos = []
         this.fin = false; 
         this.inicio = false;
+    },
+        submit () {
+      window.location.href = '/escenario1/pregunta3/' + this.id
+
     },
     getColor(valor){
         var r = ''

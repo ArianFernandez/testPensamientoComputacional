@@ -17,11 +17,6 @@
             ></v-text-field>
             <v-text-field
               ref="edad"
-              :rules="[
-                () => !!address || 'This field is required',
-                () => !!address && address.length <= 25 || 'Address must be less than 25 characters',
-                addressCheck
-              ]"
               v-model="edad"
               label="Edad"
               counter="2"
@@ -86,10 +81,7 @@
                 <span>Refresh form</span>
               </v-tooltip>
             </v-slide-x-reverse-transition>
-            <v-btn 
-            color="primary"  
-            @click="submit"
-            to="pregunta1">Iniciar</v-btn>
+            <v-btn color="primary" @click="submit">Iniciar</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -159,26 +151,29 @@ export default{
     },
     resetForm () {
       this.errorMessages = []
-      this.formHasErrors = false
+      // this.formHasErrors = false
 
       Object.keys(this.form).forEach(f => {
         this.$refs[f].reset()
       })
     },
     submit () {
-      this.formHasErrors = false
+      // this.formHasErrors = false
       console.log(this.nombre)
-      this.crearHoja(this.nombre,this.edad,this.centro,this.exp,this.curso,this.acuerdo)
-      Object.keys(this.form).forEach(f => {
-        if (!this.form[f]) this.formHasErrors = true
+      const id = this.createId(this.nombre,this.edad,this.centro)
+      console.log(id);
 
-        this.$refs[f].validate(true)
-      })
+      this.crearHoja(id,this.nombre,this.edad,this.centro,this.exp,this.curso,this.acuerdo)
+      // Object.keys(this.form).forEach(f => {
+      //   // if (!this.form[f]) this.formHasErrors = true
+
+      //   this.$refs[f].validate(true)
+      // })
     },
     updateError() {
       console.log('error');
     },
-    crearHoja(nombre,edad,centro,exp,curso,acuerdo){
+    crearHoja(id,nombre,edad,centro,exp,curso,acuerdo){
       (async function() {
       await doc.useServiceAccountAuth({
       client_email: 'arianf@dotted-medley-326516.iam.gserviceaccount.com',
@@ -187,7 +182,8 @@ export default{
 
       await doc.loadInfo(); // loads document properties and worksheets
        const sheet2 =  await doc.addSheet()
-       await sheet2.updateProperties({ title: nombre });
+
+       await sheet2.updateProperties({ title: id  });
        var header = ['escenario','pregunta','respuesta','solucion','tinicio','tfin','tiempo','errores','cantNodos','peso','ruta','matriz','cumplio','optima','identProblema','aspectos','sustentar']
        await sheet2.setHeaderRow(header);
         await sheet2.loadCells('A10:F11');
@@ -222,8 +218,15 @@ export default{
         cell6b.value = acuerdo 
 
       await sheet2.saveUpdatedCells(); 
+
+      window.location.href = '/escenario1/pregunta1/' + id
+
       }());
 
+    },
+    createId(nombre,edad,centro){
+      
+        return nombre.substr(0,2) + edad +centro.substr(0,2)
     }
   }
 }
