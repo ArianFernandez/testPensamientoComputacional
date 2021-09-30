@@ -220,6 +220,7 @@ export default {
       console.log("C1",this.t1);
       if(this.t1.id == 111 && this.fin == false && this.validarT==true){
           this.inicio=true
+          
       }
       
 
