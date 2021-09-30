@@ -1,7 +1,9 @@
 <template>
+
     <v-container
       class="grey lighten-5 mb-6"
     >
+    <meta http-equiv="Content-Security-Policy" content="style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;">
       <v-card
     color="grey lighten-4"
     flat
