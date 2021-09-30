@@ -17,7 +17,6 @@ const routes = [
         path: '/',
         component: HomePage
     },
-
     {
         name: 'Pregunta1',
         path: '/escenario1/pregunta1/:id',
