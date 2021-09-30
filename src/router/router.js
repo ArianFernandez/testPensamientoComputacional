@@ -19,7 +19,7 @@ const routes = [
     },
     {
         name: 'Pregunta1',
-        path: '/pregunta1/:id',
+        path: '/escenario1/pregunta1/:id',
         component: Pregunta1
     },
     {

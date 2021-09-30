@@ -1,21 +1,7 @@
 <template>
-
     <v-container
       class="grey lighten-5 mb-6"
     >
-    <meta http-equiv="Content-Security-Policy" content="style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;">
-      <v-card
-    color="grey lighten-4"
-    flat
-    tile
-  >
-    <v-toolbar dense>
-
-      <v-toolbar-title>El lunes, Pacman y la Carita Feliz tienen examen de matemática. Traza un camino para que ambos lleguen a tiempo al colegio. </v-toolbar-title>
-
-      <v-spacer></v-spacer>
-    </v-toolbar>
-  </v-card>
     <v-row no-gutters>
       <v-col
         cols="12"
@@ -113,30 +99,8 @@
             >
               Start
             </v-btn>
-  <!-- <v-simple-table>
-    <template v-slot:default>
-      <thead>
-        <tr>
-          <th class="text-left">
-            Name
-          </th>
-          <th class="text-left">
-            Calories
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="item in desserts"
-          :key="item.name"
-        >
-          <td>{{ item.name }}</td>
-          <td>{{ item.calories }}</td>
-        </tr>
-      </tbody>
-    </template>
-  </v-simple-table> -->
-            <v-btn color="primary" @click="submit">Siguiente</v-btn>
+    <h1>{{conexiones}}</h1>
+    <h1>{{errores}}</h1>
 
 
         </v-card>
@@ -150,26 +114,25 @@
 import Konva from "konva";
 const width = window.innerWidth;
 const height = window.innerHeight;
-var doc = ''
+ var sheet = ''
 const { GoogleSpreadsheet } = require('google-spreadsheet');
-
 (async function() {
   // Initialize the sheet - doc ID is the long id in the sheets URL
- doc = new GoogleSpreadsheet('1fI43HtfxLceF9d4wlx1qNKttE4J68xvUo828ykV_CbM');
-
+const doc = new GoogleSpreadsheet('1fI43HtfxLceF9d4wlx1qNKttE4J68xvUo828ykV_CbM');
 // Initialize Auth - see more available options at https://theoephraim.github.io/node-google-spreadsheet/#/getting-started/authentication
 await doc.useServiceAccountAuth({
   client_email: 'arianf@dotted-medley-326516.iam.gserviceaccount.com',
   private_key: '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDgCUx/AqfeaWV0\nL0fGMl0yLFSPk7itNcEe143qjziiCK3hIi8xpNZpeyw5Venb0E9Xjg5SY9uv/n61\nvpDIxIs5DfTE3ycc90iReGCIYHABLC1XHQ6Co8xhljsHtb7ro2kp7880KF5iUMK1\nOwE16SYhsBXUAGrH6fzbZDunQMOHXLrz0TbWfHdh53b9/aiKOmHeJ6NpulGAOtA/\nhKCNylC+KHgDzJiYrAhjGhiMI7O6Hj2bb9PKaP5ceGPJiVHJT1fC8Nz2aH30FpQX\n/IOI+eRZmJbPXDiFfAKhd9aouDK7KfROUnnd/ij9emawCrzAIKCrOJOgKQtQ41kZ\nacA2YfuvAgMBAAECggEAYpEExE6FT6+cMLlKgTMQWK4zR/XshtxDCpA4gm2fs35R\nDd9t1xAYO1EzPEiFuq2T8sfvmiUP9wbndYuRhJsgS6pNub4aJb7QARxukCGptYJb\nslt40lZBad/gObym8mIzNv2ocmCeYe/5MiXzGuZoXeLsP5ktYaYbFuUq76NpQyhg\n5nD9MGIFAD2i6VcOUsFIymhQRlOjZUtJVS3aRB4IrFGqZS//mv8Ig0yfGeSzBghv\nLnX7da6KovjqkhTzKiQKOBQaH2C9oJh5uHTz+T+dDrGoqhNca/2ok8B6oih54R+V\nWxm0Af/LRaJaAojIIF/wHk6VEWA9GfPoxL6WcumrTQKBgQDw2x8QitR0FF8+WICn\npTSUhqX2gOr2FWcDep0Tdan7Hta+az2sN7f1uUallAHeoA/SurvAIbvWn9kfbXvA\nTZqLK3BjKmpfANqvRo6IUTPynxamlf/05gUGAUlHOrl34ieqy6W+E6ZEjX+pCS5m\nJRrAvqE+YtvOIbitj2vo+cPiowKBgQDuH3HQex6GZHtiznaQqZNG8yRxySwIs2Yq\nkSiZtN2i2XCSVzaI4HGiKQF3smyFBiM8XkstYzOeQtNYBo6EsV7y/ZNpdeF1+q/F\nAb2izakKtKVTPFbEskFr/qdZhJA4935p//oz1ew4OHlaLo24vkwBq180LRLLy2BB\nMdeQRl6fhQKBgDW3KL5vt+ILiRJGeqro1UkqnmjTZ5NqQocsGUv1uesffZUKJb76\nzjQnFfJnh+M2n1DIBIdc/p9nFu1DZY4FwKm5Dl+PXhnB/wOIINGWCpfZkxuj6Gmd\nwxELyGPyXNq3vVECCfzSNQqk5Au22Ho/XDAQU7WuJodaTe2nRtG2olExAoGAOomy\nYg0SSPmEt5qH3TJCyWtWZz6MO6tWj1pV/8tNvQ31NZSJDIcYiEPKX5GWSfFjUiDg\nHE1J0DsfV4FtIcO00slxprha77Tr5uNxqgci6kXUaqznq70ihhj5LPGAvvBgvFA4\nQuvxATUo5/mPz33Ak5x8cAgwmbbqd7x4ALi75D0CgYEA5lxafnGk1GhZ/rUjd9tg\nlRDQoBPZi1SjBq4q+kztN3V2wWU/HmVF+ivkvz1W4X96ra7bNgpCSRI3N1Fhx7N1\nAA4gTjY7qxGhF3F62/eb/fLYYj7N6IV7MJnFJiPWEHyXB0qKliO+uTx7AVsEM2aa\nvIPa9JiF3qZYHqjfu5Rd/hY=\n-----END PRIVATE KEY-----\n',
 });
-
-await doc.loadInfo();
-      }());
-
-
+await doc.loadInfo(); // loads document properties and worksheets
+sheet = doc.sheetsByIndex[0]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
+const rows = await sheet.getRows();
+console.log(rows.length); // 2
+// const sundar = await sheet.addRow({ nombre: 'arian', errores: 2, peso: 10,ruta:'p1' });
+// console.log(sundar)
+}());
 function generateTargets() {
   const circles = [
-
     {x:200,y:50,id:112,color:'blue',con:{3:5}},
     {x:400,y:100,id:2,color:'green',con:{112:10,3:1,5:1,6:3}},
     {x:600,y:100,id:3,color:'green',con:{112:5,2:1,4:1,10:10}},
@@ -188,7 +151,6 @@ function generateTargets() {
   ];
   return circles;
 }
-
 export default {
   data() {
     return {
@@ -212,9 +174,7 @@ export default {
       tiempoI: 0,
       tiempoT: 0,
       tiempoF: 0,
-      contador: 0,
-      validarT: false,
-      id:this.$route.params.id 
+      validarT: false
     };
   },
   methods: {
@@ -224,21 +184,17 @@ export default {
         var errorT = this.getErrores()
         let value = document.getElementById("ip").value; 
         let aspectos = document.getElementById("aspectos").value; 
-        var tI = new Date(this.tiempoI);
-        var tF = new Date(this.tiempoF);
-        this.addRow(errorT,pesoT,rutaT,value,aspectos, this.tiempoT/60,this.contador,tI.toString(), tF.toString())
+        this.addRow(errorT,pesoT,rutaT,value,aspectos, this.tiempoT )
         this.cleanRoute()
         if (event) {
         alert('Se añadio la respuesta')
       }
     },
-
     handleMouseDown(e) {
       const onCircle = e.target instanceof Konva.Circle;
       if (!onCircle) {
         return;
       }
-
       var circ = this.getCircle(e.target.x(),e.target.y())
       this.t1=circ
       console.log("C1",this.t1);
@@ -246,18 +202,15 @@ export default {
           this.inicio=true
       }
       
-
       if(!this.inicio){
           return;
       }
-
       this.drawningLine = true;
       this.connections.push({
         id: Date.now(),
         points: [e.target.x(), e.target.y()],
         color: 'black'
       });
-
     },
     handleMouseMove(e) {
       if(!this.inicio){
@@ -269,10 +222,6 @@ export default {
       const pos = e.target.getStage().getPointerPosition();
       const lastLine = this.connections[this.connections.length - 1];
       lastLine.points = [lastLine.points[0], lastLine.points[1], pos.x, pos.y];
-    },
-    submit () {
-      window.location.href = '/escenario1/pregunta2/' + this.id
-
     },
     handleMouseUp(e) {
       if(this.inicio == false && this.fin == true){
@@ -291,12 +240,10 @@ export default {
         this.inicio = false;
       }
       var condic = this.validateConnections(this.t1.con,this.t2);
-
       console.log('seCreo',this.connections[this.connections.length - 1].points)
       this.drawningLine = false;
       const lastLine = this.connections[this.connections.length - 1];
         var peso = this.getWeights(this.t1.con,this.t2)
-
       if(condic){
         lastLine.points = [
         lastLine.points[0],
@@ -311,7 +258,6 @@ export default {
             peso: peso
         })
         this.pesos.push(peso)
-
       }else{
         this.errores.push({
             p1: this.t1.id,
@@ -323,16 +269,13 @@ export default {
         this.tiempoT = this.tiempoF - this.tiempoI;
         this.validarT= false;
       console.log(this.pesos)
-
     },
     getRuta(){
         var total = '111'
-
         this.conexiones.forEach(element => {
             total = total.concat(' ,')
             total = total.concat(element.p2)
         });
-
         return total
     },
     getErrores(){
@@ -340,7 +283,6 @@ export default {
     },
     getTotalWeight(){
         var total = 0
-
         this.pesos.forEach(element => {
             total += element
         });
@@ -373,53 +315,19 @@ export default {
         }
         return value;  
     },
-    addRow(err,peso,ruta,ip,aspectos,tiempo,contador,tiempoI,tiempoF){
-        this.respuestas.push({ 
-          escenario: 1,
-          pregunta: 1,
-          respuesta: contador,
-          solucion: 'solucion',
-          tinicio: tiempoI ,
-          tfin: tiempoF,
-          tiempo: tiempo,
-          errores: err,
-          cantNodos: 5,
-          peso: peso,
-          ruta: ruta,
-          matriz: 's',
-          cumplio: 'T',
-          optima: 'T',
-          identProblema: ip,
-          aspectos: aspectos,
-          sustentar: 'saf'
-        });
-
+    addRow(err,peso,ruta,ip,aspectos,tiempo){
+        this.respuestas.push({ nombre: 'arian', errores: err, peso: peso,ruta:ruta,identProblema: ip, aspectos:aspectos,tiempo:tiempo});
     },
     sendRow: function (event){
-       doc.useServiceAccountAuth({
-      client_email: 'arianf@dotted-medley-326516.iam.gserviceaccount.com',
-      private_key: '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDgCUx/AqfeaWV0\nL0fGMl0yLFSPk7itNcEe143qjziiCK3hIi8xpNZpeyw5Venb0E9Xjg5SY9uv/n61\nvpDIxIs5DfTE3ycc90iReGCIYHABLC1XHQ6Co8xhljsHtb7ro2kp7880KF5iUMK1\nOwE16SYhsBXUAGrH6fzbZDunQMOHXLrz0TbWfHdh53b9/aiKOmHeJ6NpulGAOtA/\nhKCNylC+KHgDzJiYrAhjGhiMI7O6Hj2bb9PKaP5ceGPJiVHJT1fC8Nz2aH30FpQX\n/IOI+eRZmJbPXDiFfAKhd9aouDK7KfROUnnd/ij9emawCrzAIKCrOJOgKQtQ41kZ\nacA2YfuvAgMBAAECggEAYpEExE6FT6+cMLlKgTMQWK4zR/XshtxDCpA4gm2fs35R\nDd9t1xAYO1EzPEiFuq2T8sfvmiUP9wbndYuRhJsgS6pNub4aJb7QARxukCGptYJb\nslt40lZBad/gObym8mIzNv2ocmCeYe/5MiXzGuZoXeLsP5ktYaYbFuUq76NpQyhg\n5nD9MGIFAD2i6VcOUsFIymhQRlOjZUtJVS3aRB4IrFGqZS//mv8Ig0yfGeSzBghv\nLnX7da6KovjqkhTzKiQKOBQaH2C9oJh5uHTz+T+dDrGoqhNca/2ok8B6oih54R+V\nWxm0Af/LRaJaAojIIF/wHk6VEWA9GfPoxL6WcumrTQKBgQDw2x8QitR0FF8+WICn\npTSUhqX2gOr2FWcDep0Tdan7Hta+az2sN7f1uUallAHeoA/SurvAIbvWn9kfbXvA\nTZqLK3BjKmpfANqvRo6IUTPynxamlf/05gUGAUlHOrl34ieqy6W+E6ZEjX+pCS5m\nJRrAvqE+YtvOIbitj2vo+cPiowKBgQDuH3HQex6GZHtiznaQqZNG8yRxySwIs2Yq\nkSiZtN2i2XCSVzaI4HGiKQF3smyFBiM8XkstYzOeQtNYBo6EsV7y/ZNpdeF1+q/F\nAb2izakKtKVTPFbEskFr/qdZhJA4935p//oz1ew4OHlaLo24vkwBq180LRLLy2BB\nMdeQRl6fhQKBgDW3KL5vt+ILiRJGeqro1UkqnmjTZ5NqQocsGUv1uesffZUKJb76\nzjQnFfJnh+M2n1DIBIdc/p9nFu1DZY4FwKm5Dl+PXhnB/wOIINGWCpfZkxuj6Gmd\nwxELyGPyXNq3vVECCfzSNQqk5Au22Ho/XDAQU7WuJodaTe2nRtG2olExAoGAOomy\nYg0SSPmEt5qH3TJCyWtWZz6MO6tWj1pV/8tNvQ31NZSJDIcYiEPKX5GWSfFjUiDg\nHE1J0DsfV4FtIcO00slxprha77Tr5uNxqgci6kXUaqznq70ihhj5LPGAvvBgvFA4\nQuvxATUo5/mPz33Ak5x8cAgwmbbqd7x4ALi75D0CgYEA5lxafnGk1GhZ/rUjd9tg\nlRDQoBPZi1SjBq4q+kztN3V2wWU/HmVF+ivkvz1W4X96ra7bNgpCSRI3N1Fhx7N1\nAA4gTjY7qxGhF3F62/eb/fLYYj7N6IV7MJnFJiPWEHyXB0qKliO+uTx7AVsEM2aa\nvIPa9JiF3qZYHqjfu5Rd/hY=\n-----END PRIVATE KEY-----\n',
-      });
-
-       doc.loadInfo();
-       
-       const sheet2 =   doc.sheetsByTitle[this.id]
-
-        const moreRows =  sheet2.addRows(this.respuestas)
+        const moreRows =  sheet.addRows(this.respuestas)
         console.log(moreRows)
         console.log(event)
-
-      
-
     },
     
     startTimer: function (event){
       // el evento cuyo tiempo ha transcurrido aquí:
         this.validarT = true;
-        console.log(this.id); // 2
-
         this.tiempoI  = Date.now();
-
         console.log(event)
     },
     cleanRoute(){
@@ -448,8 +356,6 @@ export default {
         }
         return r;
     }
-
   }
   };
-
 </script>
