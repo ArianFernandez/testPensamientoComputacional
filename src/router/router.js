@@ -1,10 +1,11 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import  Instrucciones from '../components/pages/instrucciones';
 import Pregunta1 from '../components/pages/pregunta1';
 import Pregunta2 from '../components/pages/pregunta2';
 import Pregunta3 from '../components/pages/pregunta3';
 import HomePage from '../components/pages/home';
+// import Instrucciones from '../components/pages/instrucciones';
+
 
 
 
@@ -16,11 +17,11 @@ const routes = [
         path: '/',
         component: HomePage
     },
-    {
-        name: 'Instrucciones',
-        path: '/instrucciones',
-        component: Instrucciones
-    },
+    // {
+    //     name: 'Instrucciones',
+    //     path: '/instrucciones',
+    //     component: Instrucciones
+    // },
     {
         name: 'Pregunta1',
         path: '/escenario1/pregunta1/:id',
