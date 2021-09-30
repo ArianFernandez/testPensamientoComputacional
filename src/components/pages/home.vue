@@ -225,6 +225,7 @@ export default{
 
     },
     createId(nombre,edad,centro){
+      
         return nombre.substr(0,2) + edad +centro.substr(0,2)
     }
   }
