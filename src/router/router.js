@@ -17,11 +17,7 @@ const routes = [
         path: '/',
         component: HomePage
     },
-    // {
-    //     name: 'Instrucciones',
-    //     path: '/instrucciones',
-    //     component: Instrucciones
-    // },
+
     {
         name: 'Pregunta1',
         path: '/escenario1/pregunta1/:id',
