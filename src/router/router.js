@@ -1,8 +1,11 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import HomePage from '../components/pages/HomePage';
+import HomePage from '../components/pages/instrucciones';
 import Pregunta1 from '../components/pages/pregunta1';
-import Instrucciones from '../components/pages/Instrucciones';
+import Pregunta2 from '../components/pages/pregunta2';
+import Pregunta3 from '../components/pages/pregunta3';
+
+import Instrucciones from '../components/pages/home';
 
 
 
@@ -12,17 +15,27 @@ const routes = [
     {
         name: 'Home',
         path: '/',
-        component: HomePage
+        component: Instrucciones
     },
     {
         name: 'Instrucciones',
         path: '/instrucciones',
-        component: Instrucciones
+        component: HomePage
     },
     {
         name: 'Pregunta1',
-        path: '/pregunta1',
+        path: '/escenario1/pregunta1/:id',
         component: Pregunta1
+    },
+    {
+        name: 'Pregunta2',
+        path: '/escenario1/pregunta2/:id',
+        component: Pregunta2
+    },
+    {
+        name: 'Pregunta3',
+        path: '/escenario1/pregunta3/:id',
+        component: Pregunta3
     }
 ];
 
