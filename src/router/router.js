@@ -1,11 +1,10 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import HomePage from '../components/pages/instrucciones';
+import  Instrucciones from '../components/pages/instrucciones';
 import Pregunta1 from '../components/pages/pregunta1';
 import Pregunta2 from '../components/pages/pregunta2';
 import Pregunta3 from '../components/pages/pregunta3';
-
-import Instrucciones from '../components/pages/home';
+import HomePage from '../components/pages/home';
 
 
 
@@ -15,12 +14,12 @@ const routes = [
     {
         name: 'Home',
         path: '/',
-        component: Instrucciones
+        component: HomePage
     },
     {
         name: 'Instrucciones',
         path: '/instrucciones',
-        component: HomePage
+        component: Instrucciones
     },
     {
         name: 'Pregunta1',
