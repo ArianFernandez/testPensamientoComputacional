@@ -167,6 +167,7 @@ await doc.loadInfo();
 
 function generateTargets() {
   const circles = [
+    
     {x:200,y:50,id:112,color:'blue',con:{3:5}},
     {x:400,y:100,id:2,color:'green',con:{112:10,3:1,5:1,6:3}},
     {x:600,y:100,id:3,color:'green',con:{112:5,2:1,4:1,10:10}},
