@@ -186,14 +186,14 @@ export default{
        await sheet2.updateProperties({ title: id  });
        var header = ['escenario','pregunta','respuesta','solucion','tinicio','tfin','tiempo','errores','cantNodos','peso','ruta','matriz','cumplio','optima','identProblema','aspectos','sustentar']
        await sheet2.setHeaderRow(header);
-        await sheet2.loadCells('A24:F25');
+        await sheet2.loadCells('A10:F11');
 
-      const cell1 =  sheet2.getCellByA1('A24');
-       const cell2 =  sheet2.getCellByA1('B24');
-       const cell3 =  sheet2.getCellByA1('C24');
-       const cell4 =  sheet2.getCellByA1('D24');
-       const celL5 =  sheet2.getCellByA1('E24');
-       const cell6 =  sheet2.getCellByA1('F24');
+      const cell1 =  sheet2.getCellByA1('A10');
+       const cell2 =  sheet2.getCellByA1('B10');
+       const cell3 =  sheet2.getCellByA1('C10');
+       const cell4 =  sheet2.getCellByA1('D10');
+       const celL5 =  sheet2.getCellByA1('E10');
+       const cell6 =  sheet2.getCellByA1('F10');
        
         cell1.value = 'Nombre'
         cell2.value = 'Edad'
@@ -203,12 +203,12 @@ export default{
         cell6.value = 'Acuerdo'  
       await sheet2.saveUpdatedCells(); 
         
-       const cell1b =  sheet2.getCellByA1('A25');
-       const cell2b =  sheet2.getCellByA1('B25');
-       const cell3b =  sheet2.getCellByA1('C25');
-       const cell4b =  sheet2.getCellByA1('D25');
-       const celL5b =  sheet2.getCellByA1('E25');
-       const cell6b =  sheet2.getCellByA1('F25');
+       const cell1b =  sheet2.getCellByA1('A11');
+       const cell2b =  sheet2.getCellByA1('B11');
+       const cell3b =  sheet2.getCellByA1('C11');
+       const cell4b =  sheet2.getCellByA1('D11');
+       const celL5b =  sheet2.getCellByA1('E11');
+       const cell6b =  sheet2.getCellByA1('F11');
         
         cell1b.value = nombre
         cell2b.value = edad

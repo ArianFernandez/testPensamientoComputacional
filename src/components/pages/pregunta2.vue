@@ -347,7 +347,15 @@ export default {
 
     },
     validarNodoFinal(){
-        if(this.conexiones.at(-1).p2 == 112 && this.conexiones.indexOf(6).p2 !== -1){
+        var s = 'f'
+
+        this.conexiones.forEach(element =>{
+          if(element.p2 == 6){
+            s = 't'
+          }
+        })
+
+        if(this.conexiones.at(-1).p2 == 112 && s == 't'){
             return 'T'
         }
         return "F"
