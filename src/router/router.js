@@ -11,33 +11,32 @@ import HomePage from '../components/pages/home.vue';
 
 Vue.use(VueRouter);
 
-const routes = [
-    {
-        name: 'Home',
-        path: '/',
-        component: HomePage
-    },
-    {
-        name: 'Pregunta1',
-        path: '/escenario1/pregunta1/:id',
-        component: Pregunta1
-    },
-    {
-        name: 'Pregunta2',
-        path: '/escenario1/pregunta2/:id',
-        component: Pregunta2
-    },
-    {
-        name: 'Pregunta3',
-        path: '/escenario1/pregunta3/:id',
-        component: Pregunta3
-    }
-];
 
 const router = new VueRouter({
     mode: 'history',
-    base: 'localhost:8080',
-    routes
+    routes : [
+        {
+            name: 'Home',
+            path: '/',
+            component: HomePage
+        },
+        {
+            name: 'Pregunta1',
+            path: '/escenario1/pregunta1/:id',
+            component: Pregunta1
+        },
+        {
+            name: 'Pregunta2',
+            path: '/escenario1/pregunta2/:id',
+            component: Pregunta2
+        },
+        {
+            name: 'Pregunta3',
+            path: '/escenario1/pregunta3/:id',
+            component: Pregunta3
+        }
+    ]
+
 });
 
 export default router;
