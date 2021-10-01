@@ -221,6 +221,8 @@ export default{
 
       window.location.href = '/escenario1/pregunta1/' + id
 
+      return false;
+
       }());
 
     },
