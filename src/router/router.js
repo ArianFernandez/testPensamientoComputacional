@@ -34,10 +34,10 @@ const routes = [
     }
 ];
 
-// const router = new VueRouter({
-//     mode: 'history',
-//     base: 'localhost:8080',
-//     routes
-// });
+const router = new VueRouter({
+    mode: 'history',
+    base: 'localhost:8080',
+    routes
+});
 
 export default router;
