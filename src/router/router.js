@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Pregunta1 from '../components/pages/pregunta1';
+import Pregunta1 from '../components/pages/Pregunta1';
 import Pregunta2 from '../components/pages/pregunta2';
 import Pregunta3 from '../components/pages/pregunta3';
 import HomePage from '../components/pages/home';

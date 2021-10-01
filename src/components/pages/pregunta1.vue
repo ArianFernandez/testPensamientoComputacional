@@ -455,7 +455,7 @@ export default {
         this.respuestas.push({ 
           escenario: 1,
           pregunta: this.contS,
-          respuesta: contador,
+          respuesta: contador ,
           solucion: 'borrador',
           tinicio: tiempoI ,
           tfin: tiempoF,
