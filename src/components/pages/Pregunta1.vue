@@ -209,8 +209,9 @@ function generateTargets() {
     {x:800,y:550,id:11,color:'green',con:{9:3,111:10}},
     {x:350,y:700,id:12,color:'green',con:{8:10,10:3,14:1}},
     {x:800,y:700,id:111,color:'red',con:{10:10,11:10,12:10,15:3}},
-    {x:600,y:850,id:14,color:'green',con:{12:1,15:5}},
-    {x:420,y:850,id:15,color:'green',con:{10:5,13:3,14:5}}
+    {x:420,y:850,id:14,color:'green',con:{10:5,13:3,14:5}},
+    {x:600,y:850,id:15,color:'green',con:{12:1,15:5,10:5}}
+
   ];
   return circles;
 }
@@ -239,12 +240,14 @@ export default {
       fin: false,
       tiempoI: 0,
       idSol: 0,
+      totalNodos:0,
       tiempoT: 0,
       tiempoF: 0,
       tiempoIN: 0,
       tiempoFN: 0,
       tiempoTN: 0,
-      contador: 0,
+      contador: 1,
+      rutaMatriz:[],
       matriz:[],
       validarT: false,
       id:this.$route.params.id 
@@ -286,6 +289,7 @@ export default {
       }
 
       var circ = this.getCircle(e.target.x(),e.target.y())
+      console.log(e.target.x()+', '+e.target.y())
       this.t1=circ
       console.log("C1",this.t1);
       if(this.t1.id == 111 && this.fin == false && this.validarT==true){
@@ -396,6 +400,8 @@ export default {
         var total = '111'
 
         this.conexiones.forEach(element => {
+          this.totalNodos +=1
+          this.rutaMatriz.push(element.p2)
             total = total.concat(' ,')
             total = total.concat(element.p2)
         });
@@ -425,8 +431,12 @@ export default {
         return total
     },
     getCircle(x,y){
+
+
       var circ = 0;
         this.targets.forEach(element => {
+
+
           if(x==element.x && y==element.y){
               circ=element;
           }
@@ -451,17 +461,27 @@ export default {
         }
         return value;  
     },
+    getTotalNodos(){
+      var s = 0
+        this.rutaMatriz.forEach(element => {
+          if(element!=112){
+            s+=1
+          }
+        });
+        
+        return s;  
+    },
     addRow(err,peso,ruta,ip,aspectos,tiempo,contador,tiempoI,tiempoF,matriz,vPeso,nodoF){
         this.respuestas.push({ 
           escenario: 1,
-          pregunta: this.contS,
+          pregunta: 1,
           respuesta: contador ,
           solucion: 'borrador',
           tinicio: tiempoI ,
           tfin: tiempoF,
           tiempo: tiempo,
           errores: err,
-          cantNodos: ruta.length,
+          cantNodos: this.getTotalNodos(),
           peso: peso,
           ruta: ruta,
           matriz: matriz,
@@ -471,7 +491,7 @@ export default {
           aspectos: aspectos,
           sustentar: 'saf'
         });
-
+        this.contador +=1
         this.contS += 1
         this.soluciones.push({id:this.contS,nombre: 'Solucion ' + this.contS, con: this.connections,sol: '' })
 
@@ -485,9 +505,16 @@ export default {
        doc.loadInfo();
        
        const sheet2 =   doc.sheetsByTitle[this.id]
+       
         this.respuestas.forEach(element => {
-            if(element.escenario == 1 && element.pregunta == this.idSol){
+          console.log("element: "+element.respuesta)
+          console.log("id: "+this.idSol)
+
+            if(element.escenario == 1 && element.respuesta == this.idSol){
                 element.solucion = 'solucion'
+            }else{
+                element.solucion = 'borrador'
+
             }
 
         });
@@ -517,6 +544,7 @@ export default {
         this.fin = false; 
         this.inicio = false;
         this.matriz = []
+        this.rutaMatriz = []
     },
     getColor(valor){
         var r = ''

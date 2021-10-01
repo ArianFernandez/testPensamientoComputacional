@@ -124,16 +124,22 @@
           <th class="text-left">
             Nombre
           </th>
+          <th class="text-left">
+            Solucion
+          </th>
+          
         </tr>
       </thead>
       <tbody>
         <tr
           v-for="item in soluciones"
           :key="item.nombre"
-          @click="mostrarRuta(item.con)"
+          @click="mostrarRuta(item.con,item.id)"
         >
           <td>{{ item.id }}</td>
           <td>{{ item.nombre }}</td>
+          <td>{{ item.sol }}</td>
+
         </tr>
       </tbody>
     </template>
@@ -182,8 +188,8 @@ function generateTargets() {
     {x:800,y:550,id:11,color:'green',con:{9:3,111:10}},
     {x:350,y:700,id:12,color:'green',con:{8:10,10:3,14:1}},
     {x:800,y:700,id:111,color:'red',con:{10:10,11:10,12:10,15:3}},
-    {x:600,y:850,id:14,color:'green',con:{12:1,15:5}},
-    {x:420,y:850,id:15,color:'green',con:{10:5,13:3,14:5}}
+    {x:420,y:850,id:14,color:'green',con:{10:5,13:3,14:5}},
+    {x:600,y:850,id:15,color:'green',con:{12:1,15:5,10:5}}
   ];
   return circles;
 }
@@ -197,12 +203,13 @@ export default {
       },
       targets: generateTargets(),
       connections: [],
+      soluciones:[],
       drawningLine: false,
       conexiones: [],
       errores: [],
+      contS:0,
       t1:0,
       t2:0,
-      soluciones:[],
       respuestas: [],
       titulo:"sad",
       pesos:[],
@@ -210,14 +217,15 @@ export default {
       inicio: false ,
       fin: false,
       tiempoI: 0,
-      contS:0,
-
+      idSol: 0,
+      totalNodos:0,
       tiempoT: 0,
       tiempoF: 0,
       tiempoIN: 0,
       tiempoFN: 0,
       tiempoTN: 0,
-      contador: 0,
+      contador: 1,
+      rutaMatriz:[],
       matriz:[],
       validarT: false,
       id:this.$route.params.id 
@@ -279,7 +287,7 @@ export default {
       lastLine.points = [lastLine.points[0], lastLine.points[1], pos.x, pos.y];
     },
     submit () {
-      window.location.href = '/escenario1/pregunta2/' + this.id
+      window.location.href = '/escenario1/pregunta3/' + this.id
 
     },
     handleMouseUp(e) {
@@ -344,7 +352,15 @@ export default {
         }
         return "F"
     },
-        mostrarRuta(con){
+    mostrarRuta(con,id){
+      this.soluciones.forEach(element => {
+            if(element.id == id){
+              element.sol = 'x'
+              this.idSol = id
+            }else{
+              element.sol = ''
+            }
+        });
         this.connections= con
     },
     validarPeso(){
@@ -357,6 +373,8 @@ export default {
         var total = '111'
 
         this.conexiones.forEach(element => {
+          this.totalNodos +=1
+          this.rutaMatriz.push(element.p2)
             total = total.concat(' ,')
             total = total.concat(element.p2)
         });
@@ -412,17 +430,27 @@ export default {
         }
         return value;  
     },
+    getTotalNodos(){
+      var s = 0
+        this.rutaMatriz.forEach(element => {
+          if(element!=112){
+            s+=1
+          }
+        });
+        
+        return s;  
+    },
     addRow(err,peso,ruta,ip,aspectos,tiempo,contador,tiempoI,tiempoF,matriz,vPeso,nodoF){
         this.respuestas.push({ 
           escenario: 1,
           pregunta: 2,
           respuesta: contador,
-          solucion: 'solucion',
+          solucion: 'borrador',
           tinicio: tiempoI ,
           tfin: tiempoF,
           tiempo: tiempo,
           errores: err,
-          cantNodos: ruta.length,
+          cantNodos: this.getTotalNodos(),
           peso: peso,
           ruta: ruta,
           matriz: matriz,
@@ -432,8 +460,9 @@ export default {
           aspectos: aspectos,
           sustentar: 'saf'
         });
-                this.contS += 1
-        this.soluciones.push({id:this.contS,nombre: 'Solucion ' + this.contS, con: this.connections })
+        this.contador +=1
+        this.contS += 1
+        this.soluciones.push({id:this.contS,nombre: 'Solucion ' + this.contS, con: this.connections,sol: '' })
 
     },
     sendRow: function (event){
@@ -445,6 +474,19 @@ export default {
        doc.loadInfo();
        
        const sheet2 =   doc.sheetsByTitle[this.id]
+
+       this.respuestas.forEach(element => {
+          console.log("element: "+element.respuesta)
+          console.log("id: "+this.idSol)
+
+            if(element.escenario == 1 && element.respuesta == this.idSol){
+                element.solucion = 'solucion'
+            }else{
+                element.solucion = 'borrador'
+
+            }
+
+        });
 
         const moreRows =  sheet2.addRows(this.respuestas)
         console.log(moreRows)
@@ -472,6 +514,9 @@ export default {
         this.pesos = []
         this.fin = false; 
         this.inicio = false;
+        this.matriz = []
+        this.rutaMatriz = []
+
     },
     getColor(valor){
         var r = ''

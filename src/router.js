@@ -4,7 +4,6 @@ import Pregunta1 from './components/pages/Pregunta1.vue';
 import Pregunta2 from './components/pages/pregunta2.vue';
 import Pregunta3 from './components/pages/pregunta3.vue';
 import HomePage from './components/pages/home.vue';
-import Prueba from './components/pages/prueba.vue';
 
 // import Instrucciones from '../components/pages/instrucciones';
 
@@ -36,11 +35,6 @@ const router = new VueRouter({
             name: 'Pregunta3',
             path: '/escenario1/pregunta3/:id',
             component: Pregunta3
-        },
-        {
-            name: 'Prueba',
-            path: '/prueba',
-            component: Prueba
         }
     ]
 
