@@ -111,11 +111,33 @@
             >
               Start
             </v-btn>
-    <h1>{{conexiones}}</h1>
-    <h1>{{errores}}</h1>
+
 
             <v-btn color="primary" @click="submit">Siguiente</v-btn>
-
+              <v-simple-table>
+    <template v-slot:default>
+      <thead>
+        <tr>
+          <th class="text-left">
+            Numero
+          </th>
+          <th class="text-left">
+            Nombre
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="item in soluciones"
+          :key="item.nombre"
+          @click="mostrarRuta(item.con)"
+        >
+          <td>{{ item.id }}</td>
+          <td>{{ item.nombre }}</td>
+        </tr>
+      </tbody>
+    </template>
+  </v-simple-table>
         </v-card>
       </v-col>
     </v-row>
@@ -146,6 +168,7 @@ await doc.loadInfo();
 
 function generateTargets() {
   const circles = [
+
     {x:200,y:50,id:112,color:'blue',con:{3:5}},
     {x:400,y:100,id:2,color:'green',con:{112:10,3:1,5:1,6:3}},
     {x:600,y:100,id:3,color:'green',con:{112:5,2:1,4:1,10:10}},
@@ -179,6 +202,7 @@ export default {
       errores: [],
       t1:0,
       t2:0,
+      soluciones:[],
       respuestas: [],
       titulo:"sad",
       pesos:[],
@@ -186,9 +210,15 @@ export default {
       inicio: false ,
       fin: false,
       tiempoI: 0,
+      contS:0,
+
       tiempoT: 0,
       tiempoF: 0,
+      tiempoIN: 0,
+      tiempoFN: 0,
+      tiempoTN: 0,
       contador: 0,
+      matriz:[],
       validarT: false,
       id:this.$route.params.id 
     };
@@ -197,12 +227,13 @@ export default {
     enviarData: function (event) {
         var pesoT = this.getTotalWeight()
         var rutaT = this.getRuta()
+        var matrizT = this.getMatriz()
         var errorT = this.getErrores()
         let value = document.getElementById("ip").value; 
         let aspectos = document.getElementById("aspectos").value; 
         var tI = new Date(this.tiempoI);
         var tF = new Date(this.tiempoF);
-        this.addRow(errorT,pesoT,rutaT,value,aspectos, this.tiempoT/60,this.contador,tI.toString(), tF.toString())
+        this.addRow(errorT,pesoT,rutaT,value,aspectos, this.tiempoT/1000,this.contador,tI.toString(), tF.toString(),matrizT,this.validarPeso(),this.validarNodoFinal())
         this.cleanRoute()
         if (event) {
         alert('Se añadio la respuesta')
@@ -220,7 +251,6 @@ export default {
       console.log("C1",this.t1);
       if(this.t1.id == 111 && this.fin == false && this.validarT==true){
           this.inicio=true
-          
       }
       
 
@@ -229,6 +259,7 @@ export default {
       }
 
       this.drawningLine = true;
+      this.tiempoIN = Date.now();
       this.connections.push({
         id: Date.now(),
         points: [e.target.x(), e.target.y()],
@@ -246,6 +277,10 @@ export default {
       const pos = e.target.getStage().getPointerPosition();
       const lastLine = this.connections[this.connections.length - 1];
       lastLine.points = [lastLine.points[0], lastLine.points[1], pos.x, pos.y];
+    },
+    submit () {
+      window.location.href = '/escenario1/pregunta2/' + this.id
+
     },
     handleMouseUp(e) {
       if(this.inicio == false && this.fin == true){
@@ -283,7 +318,10 @@ export default {
             p2: this.t2,
             peso: peso
         })
+        this.tiempoFN = Date.now();
+        this.tiempoTN = this.tiempoFN - this.tiempoIN
         this.pesos.push(peso)
+        this.matriz.push(this.tiempoTN)
 
       }else{
         this.errores.push({
@@ -291,6 +329,8 @@ export default {
             p2: this.t2,
         })
         this.connections.pop()
+        this.fin = false; 
+        this.inicio = true;
       }
         this.tiempoF = Date.now();
         this.tiempoT = this.tiempoF - this.tiempoI;
@@ -298,12 +338,38 @@ export default {
       console.log(this.pesos)
 
     },
+    validarNodoFinal(){
+        if(this.conexiones.at(-1).p2 == 112 && this.conexiones.indexOf(6).p2 !== -1){
+            return 'T'
+        }
+        return "F"
+    },
+        mostrarRuta(con){
+        this.connections= con
+    },
+    validarPeso(){
+      if(this.peso <= 24){
+        return "T"
+      }
+      return "F"
+    },
     getRuta(){
         var total = '111'
 
         this.conexiones.forEach(element => {
             total = total.concat(' ,')
             total = total.concat(element.p2)
+        });
+
+        return total
+    },
+    getMatriz(){
+        var total = ''
+
+        this.matriz.forEach(element => {
+            total = total.concat(element/1000)
+            total = total.concat(' ,')
+
         });
 
         return total
@@ -346,26 +412,28 @@ export default {
         }
         return value;  
     },
-    addRow(err,peso,ruta,ip,aspectos,tiempo,contador,tiempoI,tiempoF){
+    addRow(err,peso,ruta,ip,aspectos,tiempo,contador,tiempoI,tiempoF,matriz,vPeso,nodoF){
         this.respuestas.push({ 
           escenario: 1,
-          pregunta: 1,
+          pregunta: 2,
           respuesta: contador,
           solucion: 'solucion',
           tinicio: tiempoI ,
           tfin: tiempoF,
           tiempo: tiempo,
           errores: err,
-          cantNodos: 5,
+          cantNodos: ruta.length,
           peso: peso,
           ruta: ruta,
-          matriz: 's',
-          cumplio: 'T',
-          optima: 'T',
+          matriz: matriz,
+          cumplio: nodoF,
+          optima: vPeso,
           identProblema: ip,
           aspectos: aspectos,
           sustentar: 'saf'
         });
+                this.contS += 1
+        this.soluciones.push({id:this.contS,nombre: 'Solucion ' + this.contS, con: this.connections })
 
     },
     sendRow: function (event){
@@ -375,7 +443,8 @@ export default {
       });
 
        doc.loadInfo();
-       const sheet2 =   doc.sheetsByTitle['Ar22Un']
+       
+       const sheet2 =   doc.sheetsByTitle[this.id]
 
         const moreRows =  sheet2.addRows(this.respuestas)
         console.log(moreRows)
@@ -387,6 +456,8 @@ export default {
     
     startTimer: function (event){
       // el evento cuyo tiempo ha transcurrido aquí:
+      this.cleanRoute()
+
         this.validarT = true;
         console.log(this.id); // 2
 
@@ -401,10 +472,6 @@ export default {
         this.pesos = []
         this.fin = false; 
         this.inicio = false;
-    },
-        submit () {
-      window.location.href = '/escenario1/pregunta3/' + this.id
-
     },
     getColor(valor){
         var r = ''
