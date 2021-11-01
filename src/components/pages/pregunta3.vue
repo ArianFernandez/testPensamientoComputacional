@@ -360,20 +360,20 @@ export default {
 
     },
     validarPeso(){
-      if(this.peso <= 21){
+      if(this.getTotalNodos() == 2 && this.validarNodoFinal() == 'T'){
         return "T"
       }
       return "F"
     },
     validarNodoFinal(){
-        var cant = this.cantNodos
-        cant -= 1
+        // var cant = this.cantNodos
+        // cant -= 1
         if(this.conexiones.at(-1).p2 == 112){
-          cant-=1
+          return "T"
         }
-        if(cant == 2){
-        return "T"
-        }
+        // if(cant == 2){
+        // return "T"
+        // }
 
         return "F"
     },
@@ -381,8 +381,10 @@ export default {
         var total = '111'
 
         this.conexiones.forEach(element => {
+            this.rutaMatriz.push(element.p2)
             total = total.concat(' ,')
             total = total.concat(element.p2)
+            
         });
 
         return total
@@ -447,6 +449,10 @@ export default {
         return s;  
     },
     addRow(err,peso,ruta,ip,aspectos,tiempo,contador,tiempoI,tiempoF,matriz,vPeso,nodoF){
+
+        console.log('Matriz: '+this.rutaMatriz)
+        console.log('Cant: '+this.getTotalNodos())
+
         this.respuestas.push({ 
           escenario: 1,
           pregunta: 3,
@@ -469,7 +475,7 @@ export default {
         this.contador +=1
 
         this.contS += 1
-        this.soluciones.push({id:this.contS,nombre: 'Solucion ' + this.contS, con: this.connections })
+        this.soluciones.push({id:this.contS,nombre: 'Solucion ' + this.contS, con: this.connections,sol: '' })
     },
     sendRow: function (event){
        doc.useServiceAccountAuth({

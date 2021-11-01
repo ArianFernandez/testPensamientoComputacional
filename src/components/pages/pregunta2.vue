@@ -372,7 +372,7 @@ export default {
         this.connections= con
     },
     validarPeso(){
-      if(this.peso <= 24){
+      if(this.peso == 24){
         return "T"
       }
       return "F"
