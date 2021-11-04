@@ -6,7 +6,7 @@
     >
       <v-col
         :key=4
-        cols="7"
+        cols="4"
       >
         <v-card
           class="pa-2"
@@ -46,9 +46,8 @@
     </vue-draggable-resizable>
         </v-card>
       </v-col>
-
-            <v-col
-            cols="5"
+<v-col
+            cols="4"
         :key=3
       >
         <v-card
@@ -58,6 +57,21 @@
           height="600px"
 
         >
+        </v-card>
+      </v-col>
+            <v-col
+            cols="4"
+        :key=3
+      >
+        <v-card
+          class="pa-2"
+          outlined
+          tile
+          height="600px"
+
+        >
+          <img :src="image" class="rounded">
+
         </v-card>
       </v-col>
     </v-row>
@@ -247,7 +261,8 @@ function generarBordes(cirecle) {
     });
 }
 export default {
-    data: () => ({
+    data(){
+      return {
 
         targets: generateTargets(),
         anguloDir: {
@@ -266,6 +281,8 @@ export default {
         },
         connections: [],
         drawningLine: false,
+      image: require('@/assets/muestra.jpg'),
+
         b1: require('@/assets/Bloque01.png'),
         b2: require('@/assets/Bloque02.png'),
         b10: require('@/assets/Bloque02.png'),
@@ -308,8 +325,19 @@ export default {
       },
       tempAbajo:'',
       tempArriba:'',
+      tiempoI: 0,
+      tiempoF: 0,
+      tiMatriz:0,
+      tfMAtriz:0,
+      cum : 'no',
+      cond : 0,
+      for : 0,
+      dir:0,
+      dev :0,
+      errores:0,
+      id:this.$route.params.id 
 
-    }),
+    }},
 
     methods: {
 
@@ -339,7 +367,18 @@ export default {
         ((this.posiciones['b4'][1]-this.posiciones['b2'][1]<70 && this.posiciones['b4'][1]-this.posiciones['b2'][1]>0 )||(this.posiciones['b4'][1]-this.posiciones['b2b'][1]<70 && this.posiciones['b4'][1]-this.posiciones['b2b'][1]>0 ))&&
         this.posiciones['b3'][1]-this.posiciones['b4'][1]<70 && this.posiciones['b3'][1]-this.posiciones['b4'][1]>0
       ){
-              console.log('correcto')
+              val = true
+              this.cum = 'si'
+
+              if(this.posiciones['b9'][0]>575){
+                this.for = this.for + 1 
+              }
+              if(this.posiciones['b8'][0]>575){
+                this.cond = this.cond + 1 
+              }
+              if(this.posiciones['b3'][0]>575 || this.posiciones['b2'][0]>575 || this.posiciones['b4'][0]>575 || this.posiciones['b5'][0]>575){
+                this.dir = this.dir + 1 
+              }
 
       }
       if(this.posiciones['b6'][1]-this.posiciones['b1'][1]<70 && this.posiciones['b6'][1]-this.posiciones['b1'][1]>0 &&
@@ -353,6 +392,10 @@ export default {
 
       ){
               console.log('correcto')
+              val = true
+              this.cum = 'si'
+
+
 
       }
       if(this.posiciones['b8'][1]-this.posiciones['b1'][1]<70 && this.posiciones['b8'][1]-this.posiciones['b1'][1]>0 &&
@@ -363,9 +406,88 @@ export default {
         ((this.posiciones['b2b'][1]-this.posiciones['b9'][1]<70 && this.posiciones['b2b'][1]-this.posiciones['b9'][1]>0) || (this.posiciones['b2'][1]-this.posiciones['b9'][1]<70 && this.posiciones['b2'][1]-this.posiciones['b9'][1]>0))
       ){
               console.log('correcto')
+              val = true
+              this.cum = 'si'
+
+
+
+      }
+
+      if(val){
+        this.enviarData()
+
+        alert('Respuesta correcta')
+        window.location.href = '/escenario1/pregunta3a/' + this.id
+
+      }else{
+        this.enviarData()
+
+        alert('Respuesta incorrecta')
+
+      this.tiempoI = Date.now();
+
+      this.errores = this.errores + 1
+
 
       }
     return val
+    },
+    sendRow(){
+      doc.useServiceAccountAuth({
+      client_email: 'arianf@dotted-medley-326516.iam.gserviceaccount.com',
+      private_key: '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDgCUx/AqfeaWV0\nL0fGMl0yLFSPk7itNcEe143qjziiCK3hIi8xpNZpeyw5Venb0E9Xjg5SY9uv/n61\nvpDIxIs5DfTE3ycc90iReGCIYHABLC1XHQ6Co8xhljsHtb7ro2kp7880KF5iUMK1\nOwE16SYhsBXUAGrH6fzbZDunQMOHXLrz0TbWfHdh53b9/aiKOmHeJ6NpulGAOtA/\nhKCNylC+KHgDzJiYrAhjGhiMI7O6Hj2bb9PKaP5ceGPJiVHJT1fC8Nz2aH30FpQX\n/IOI+eRZmJbPXDiFfAKhd9aouDK7KfROUnnd/ij9emawCrzAIKCrOJOgKQtQ41kZ\nacA2YfuvAgMBAAECggEAYpEExE6FT6+cMLlKgTMQWK4zR/XshtxDCpA4gm2fs35R\nDd9t1xAYO1EzPEiFuq2T8sfvmiUP9wbndYuRhJsgS6pNub4aJb7QARxukCGptYJb\nslt40lZBad/gObym8mIzNv2ocmCeYe/5MiXzGuZoXeLsP5ktYaYbFuUq76NpQyhg\n5nD9MGIFAD2i6VcOUsFIymhQRlOjZUtJVS3aRB4IrFGqZS//mv8Ig0yfGeSzBghv\nLnX7da6KovjqkhTzKiQKOBQaH2C9oJh5uHTz+T+dDrGoqhNca/2ok8B6oih54R+V\nWxm0Af/LRaJaAojIIF/wHk6VEWA9GfPoxL6WcumrTQKBgQDw2x8QitR0FF8+WICn\npTSUhqX2gOr2FWcDep0Tdan7Hta+az2sN7f1uUallAHeoA/SurvAIbvWn9kfbXvA\nTZqLK3BjKmpfANqvRo6IUTPynxamlf/05gUGAUlHOrl34ieqy6W+E6ZEjX+pCS5m\nJRrAvqE+YtvOIbitj2vo+cPiowKBgQDuH3HQex6GZHtiznaQqZNG8yRxySwIs2Yq\nkSiZtN2i2XCSVzaI4HGiKQF3smyFBiM8XkstYzOeQtNYBo6EsV7y/ZNpdeF1+q/F\nAb2izakKtKVTPFbEskFr/qdZhJA4935p//oz1ew4OHlaLo24vkwBq180LRLLy2BB\nMdeQRl6fhQKBgDW3KL5vt+ILiRJGeqro1UkqnmjTZ5NqQocsGUv1uesffZUKJb76\nzjQnFfJnh+M2n1DIBIdc/p9nFu1DZY4FwKm5Dl+PXhnB/wOIINGWCpfZkxuj6Gmd\nwxELyGPyXNq3vVECCfzSNQqk5Au22Ho/XDAQU7WuJodaTe2nRtG2olExAoGAOomy\nYg0SSPmEt5qH3TJCyWtWZz6MO6tWj1pV/8tNvQ31NZSJDIcYiEPKX5GWSfFjUiDg\nHE1J0DsfV4FtIcO00slxprha77Tr5uNxqgci6kXUaqznq70ihhj5LPGAvvBgvFA4\nQuvxATUo5/mPz33Ak5x8cAgwmbbqd7x4ALi75D0CgYEA5lxafnGk1GhZ/rUjd9tg\nlRDQoBPZi1SjBq4q+kztN3V2wWU/HmVF+ivkvz1W4X96ra7bNgpCSRI3N1Fhx7N1\nAA4gTjY7qxGhF3F62/eb/fLYYj7N6IV7MJnFJiPWEHyXB0qKliO+uTx7AVsEM2aa\nvIPa9JiF3qZYHqjfu5Rd/hY=\n-----END PRIVATE KEY-----\n',
+      });
+
+       doc.loadInfo();
+       var V = []
+       V.push({id:11})
+       const sheet2 =   doc.sheetsByTitle[this.id]
+       const moreRows =  sheet2.addRows(this.respuestas)
+        console.log(moreRows)
+    },
+    addRow(err,ruta,ip,aspectos,tiempo,contador,tiempoI,tiempoF,matriz,vPeso,nodoF){
+        this.respuestas.push({ 
+          escenario: 2,
+          pregunta: 2,
+          parte:2,
+          tinicio: tiempoI ,
+          tfin: tiempoF,
+          tiempo: tiempo,
+          ruta: ruta,
+          matriz: matriz,
+          cumplio: nodoF,
+          optima: vPeso,
+          identProblema: '-',
+          aspectos: '-',
+          sustentar: '',
+          errores: "-",
+          probado: '-',
+          devuelvo: this.dev,
+          direccion: this.dir,
+          for: this.for,
+          condicional: this.cond,
+          respuesta: 'x',
+          solucion: 'x',
+          cantNodos: 'x',
+          peso: 'x'
+        });
+        this.contador +=1
+        this.contS += 1
+        // this.soluciones.push({id:this.contS,nombre: 'Solucion ' + this.contS, con: this.connections,sol: '' })
+
+    },
+    enviarData: function (event) {
+      this.tiempoF = Date.now();
+        var tI = new Date(this.tiempoI);
+        var tf = new Date(this.tiempoF);
+        var tt = this.tiempoF-this.tiempoI;
+        console.log(tt)
+
+        this.addRow(this.errores,'-',1,1,tt/1000,1,tI.toUTCString(),tf.toUTCString(),'-',this.cum,this.cum )
+        this.sendRow()
+        if (event) {
+        alert('Se añadio la respuesta')
+      }
     },
     onResize: function (x, y, width, height) {
       this.x = x
@@ -382,19 +504,31 @@ export default {
 
     },
     setId: function(event){
-      console.log(event.target.id)
+      
       this.tempAbajo = event.target.id
       this.posiciones[event.target.id][0]=this.xtemp
       this.posiciones[event.target.id][1]=this.ytemp
 
     },
     setId2: function(event){
+      console.log(this.xtemp)
+      
       console.log(event.target.id)
       this.tempArriba = event.target.id
       if(this.tempAbajo ==  this.tempArriba){
+
+        if(this.posiciones[this.tempArriba][0]>575 && this.xtemp){
+          this.dev = this.dev + 1
+          console.log(this.dev)
+
+        }
       this.posiciones[this.tempArriba][0]=this.xtemp
       this.posiciones[this.tempArriba][1]=this.ytemp
       }else{
+        if(this.posiciones[this.tempArriba][0]>575 && this.xtemp){
+          this.dev = this.dev + 1
+          console.log(this.dev)
+        }
         this.posiciones[this.tempAbajo][0]=this.xtemp
       this.posiciones[this.tempAbajo][1]=this.ytemp
       }
@@ -407,8 +541,14 @@ export default {
         this.xtemp = this.x
         this.ytemp = this.y
         return ev 
-       }
+       },
+       startTimer: function() {
+      this.tiempoI = Date.now();
+    },
        
-    }
+    },
+    beforeMount(){
+    this.startTimer()
+ },
 }
 </script>

@@ -230,7 +230,8 @@ function generarBordes(cirecle){
         });
 }
 export default{
-  data: () => ({
+  data() {
+    return{
    dialog: false,
     targets: generateTargets(),
     targets2: generateTargets2(),
@@ -265,9 +266,10 @@ export default{
       tiMatriz:0,
       tfMAtriz:0,
       matrizT:[],
-      cum: 'no'
+      cum: 'no',
+      id:this.$route.params.id 
 
-  }),
+  }},
 
   methods: {
       handleMouseDown(e) {
@@ -285,6 +287,7 @@ export default{
         points: [(e.target.x()), (e.target.y())]
       });
     },
+    
     handleMouseMove(e) {
       if (!this.drawningLine) {
         return;
@@ -394,8 +397,10 @@ var r = Math.round(40*(Math.cos(angle * Math.PI / 180)))
        doc.loadInfo();
        var V = []
        V.push({id:11})
-       const sheet2 =   doc.sheetsByTitle['prueba']
+       const sheet2 =   doc.sheetsByTitle[this.id]
        const moreRows =  sheet2.addRows(this.respuestas)
+        window.location.href = '/escenario1/pregunta2c/' + this.id
+
         console.log(moreRows)
     },
         addRow(err,ruta,ip,aspectos,tiempo,contador,tiempoI,tiempoF,matriz,vPeso,nodoF){
@@ -418,7 +423,11 @@ var r = Math.round(40*(Math.cos(angle * Math.PI / 180)))
           devuelvo: '-',
           direccion: '-',
           for: '-',
-          condicional: '-'
+          condicional: '-',
+          respuesta: 'x',
+          solucion: 'x',
+          cantNodos: 'x',
+          peso: 'x'
         });
         this.contador +=1
         this.contS += 1
@@ -446,7 +455,7 @@ var r = Math.round(40*(Math.cos(angle * Math.PI / 180)))
         var rutaT = this.getRuta()
         this.addRow(this.errores,rutaT,1,1,tt/1000,1,tI.toUTCString(),tf.toUTCString(),this.getMatrizT(),1,this.cum)
         this.sendRow()
-        this.animate()
+
         if (event) {
         alert('Se añadio la respuesta')
       }

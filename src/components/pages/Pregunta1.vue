@@ -489,7 +489,13 @@ export default {
           optima: vPeso,
           identProblema: ip,
           aspectos: aspectos,
-          sustentar: 'saf'
+          sustentar: 'saf',
+          probado: '-',
+          devuelvo: '-',
+          direccion: '-',
+          for: '-',
+          parte:1,
+          condicional: '-'
         });
         this.contador +=1
         this.contS += 1

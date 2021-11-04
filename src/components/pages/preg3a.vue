@@ -173,7 +173,8 @@ function generarBordes(cirecle) {
 }
 
 export default {
-    data: () => ({
+    data(){
+      return{
 
         targets: generateTargets(),
          anguloDir:
@@ -201,9 +202,17 @@ export default {
       rutaMatriz:[],
       rutaCorrecta: [8,4,112,3],
       contador:0,
-      rutaTemp: []
+      rutaTemp: [],
+      errores: 0,
+      tiempoI: 0,
+      tiempoF: 0,
+      tiMatriz:0,
+      tfMAtriz:0,
+      matrizT:[],
+      cum: 'no',
+      id:this.$route.params.id 
 
-    }),
+    }},
 
     methods: {
 handleMouseDown(e) {
@@ -213,6 +222,7 @@ handleMouseDown(e) {
       }
       this.drawningLine = true;
 
+      this.tiMatriz = Date.now();
 
       this.circulo1 = e.target.id()
       this.connections.push({
@@ -267,6 +277,10 @@ var r = Math.round(40*(Math.cos(angle * Math.PI / 180)))
         e.target.y()+(-1*(this.sinD(y2)))
       ];
       this.contador += 1
+      this.tfMatriz = Date.now();
+      var tiempoTotal = this.tfMatriz - this.tiMatriz
+        this.matrizT.push(tiempoTotal)
+
         
     },
     calcularDireccion(x1,y1,x2,y2){
@@ -321,11 +335,120 @@ var r = Math.round(40*(Math.cos(angle * Math.PI / 180)))
 
      if(val){
       console.log('this.rutaCorrecta')
-
+      this.cum ='si'
+        this.enviarData()
         alert("Respuesta correcta");
+        window.location.href = '/escenario1/pregunta3b/' + this.id
+
+     }else{
+      this.cum ='no'
+      this.tiempoI = Date.now();
+        alert("Respuesta incorrecta");
+
+        this.errores = this.errores + 1
+this.cleanRoute()
+        this.enviarData()
+
      }
-   }
+   },
+   sendRow(){
+      doc.useServiceAccountAuth({
+      client_email: 'arianf@dotted-medley-326516.iam.gserviceaccount.com',
+      private_key: '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDgCUx/AqfeaWV0\nL0fGMl0yLFSPk7itNcEe143qjziiCK3hIi8xpNZpeyw5Venb0E9Xjg5SY9uv/n61\nvpDIxIs5DfTE3ycc90iReGCIYHABLC1XHQ6Co8xhljsHtb7ro2kp7880KF5iUMK1\nOwE16SYhsBXUAGrH6fzbZDunQMOHXLrz0TbWfHdh53b9/aiKOmHeJ6NpulGAOtA/\nhKCNylC+KHgDzJiYrAhjGhiMI7O6Hj2bb9PKaP5ceGPJiVHJT1fC8Nz2aH30FpQX\n/IOI+eRZmJbPXDiFfAKhd9aouDK7KfROUnnd/ij9emawCrzAIKCrOJOgKQtQ41kZ\nacA2YfuvAgMBAAECggEAYpEExE6FT6+cMLlKgTMQWK4zR/XshtxDCpA4gm2fs35R\nDd9t1xAYO1EzPEiFuq2T8sfvmiUP9wbndYuRhJsgS6pNub4aJb7QARxukCGptYJb\nslt40lZBad/gObym8mIzNv2ocmCeYe/5MiXzGuZoXeLsP5ktYaYbFuUq76NpQyhg\n5nD9MGIFAD2i6VcOUsFIymhQRlOjZUtJVS3aRB4IrFGqZS//mv8Ig0yfGeSzBghv\nLnX7da6KovjqkhTzKiQKOBQaH2C9oJh5uHTz+T+dDrGoqhNca/2ok8B6oih54R+V\nWxm0Af/LRaJaAojIIF/wHk6VEWA9GfPoxL6WcumrTQKBgQDw2x8QitR0FF8+WICn\npTSUhqX2gOr2FWcDep0Tdan7Hta+az2sN7f1uUallAHeoA/SurvAIbvWn9kfbXvA\nTZqLK3BjKmpfANqvRo6IUTPynxamlf/05gUGAUlHOrl34ieqy6W+E6ZEjX+pCS5m\nJRrAvqE+YtvOIbitj2vo+cPiowKBgQDuH3HQex6GZHtiznaQqZNG8yRxySwIs2Yq\nkSiZtN2i2XCSVzaI4HGiKQF3smyFBiM8XkstYzOeQtNYBo6EsV7y/ZNpdeF1+q/F\nAb2izakKtKVTPFbEskFr/qdZhJA4935p//oz1ew4OHlaLo24vkwBq180LRLLy2BB\nMdeQRl6fhQKBgDW3KL5vt+ILiRJGeqro1UkqnmjTZ5NqQocsGUv1uesffZUKJb76\nzjQnFfJnh+M2n1DIBIdc/p9nFu1DZY4FwKm5Dl+PXhnB/wOIINGWCpfZkxuj6Gmd\nwxELyGPyXNq3vVECCfzSNQqk5Au22Ho/XDAQU7WuJodaTe2nRtG2olExAoGAOomy\nYg0SSPmEt5qH3TJCyWtWZz6MO6tWj1pV/8tNvQ31NZSJDIcYiEPKX5GWSfFjUiDg\nHE1J0DsfV4FtIcO00slxprha77Tr5uNxqgci6kXUaqznq70ihhj5LPGAvvBgvFA4\nQuvxATUo5/mPz33Ak5x8cAgwmbbqd7x4ALi75D0CgYEA5lxafnGk1GhZ/rUjd9tg\nlRDQoBPZi1SjBq4q+kztN3V2wWU/HmVF+ivkvz1W4X96ra7bNgpCSRI3N1Fhx7N1\nAA4gTjY7qxGhF3F62/eb/fLYYj7N6IV7MJnFJiPWEHyXB0qKliO+uTx7AVsEM2aa\nvIPa9JiF3qZYHqjfu5Rd/hY=\n-----END PRIVATE KEY-----\n',
+      });
+
+       doc.loadInfo();
+       var V = []
+       V.push({id:11})
+       const sheet2 =   doc.sheetsByTitle[this.id]
+       const moreRows =  sheet2.addRows(this.respuestas)
+        console.log(moreRows)
+    },
+        addRow(err,ruta,ip,aspectos,tiempo,contador,tiempoI,tiempoF,matriz){
+        this.respuestas.push({ 
+          escenario: 2,
+          pregunta: 3,
+          parte:1,
+          tinicio: tiempoI ,
+          tfin: tiempoF,
+          tiempo: tiempo,
+          ruta: ruta,
+          matriz: matriz,
+          cumplio: this.cum,
+          optima: '-',
+          identProblema: '-',
+          aspectos: '-',
+          sustentar: '',
+          errores: err,
+          probado: '-',
+          devuelvo: '-',
+          direccion: '-',
+          for: '-',
+          condicional: '-',
+          respuesta: 'x',
+          solucion: 'x',
+          cantNodos: 'x',
+          peso: 'x'
+        });
+        this.contador +=1
+        this.contS += 1
+        // this.soluciones.push({id:this.contS,nombre: 'Solucion ' + this.contS, con: this.connections,sol: '' })
+
+    },
+    getRuta(){
+        var total = '7'
+
+        this.conexiones.forEach(element => {
+          this.totalNodos +=1
+          this.rutaMatriz.push(element.p2)
+            total = total.concat(' ,')
+            total = total.concat(element.p2)
+        });
+
+        return total
+    },
+    enviarData: function (event) {
+            this.tiempoF = Date.now();
+
+      var tI = new Date(this.tiempoI);
+        var tf = new Date(this.tiempoF);
+        var tt = this.tiempoF-this.tiempoI;
+        var rutaT = this.getRuta()
+        this.addRow(this.errores,rutaT,1,1,tt/1000,1,tI.toUTCString(),tf.toUTCString(),this.getMatrizT())
+        this.sendRow()
+        this.animate()
+        if (event) {
+        alert('Se añadio la respuesta')
+      }
+    },
+    cleanRoute(){
+        this.connections = []
+        this.conexiones = []
+        this.pesos = []
+        this.ruta = []
+        this.rutaMatriz = []
+        this.rutaTemp = []
+
+        this.contador = 0
+    },
+    getMatrizT(){
+    var total = ''
+
+        this.matrizT.forEach(element => {
+            total = total.concat(element/1000)
+            total = total.concat(' ,')
+
+        });
+
+        return total
+    },
+    startTimer: function() {
+      this.tiempoI = Date.now();
+    },
        
-    }
+    },
+    beforeMount(){
+    this.startTimer()
+ },
 }
 </script>

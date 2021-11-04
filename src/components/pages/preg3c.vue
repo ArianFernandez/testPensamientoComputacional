@@ -278,6 +278,7 @@ export default {
       },
       tempAbajo:'',
       tempArriba:'',
+      id:this.$route.params.id 
 
     }),
 

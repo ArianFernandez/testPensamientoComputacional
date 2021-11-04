@@ -51,15 +51,7 @@
               required
                solo-inverted
             ></v-autocomplete>
-                        <v-autocomplete
-              ref="acuerdo"
-              :rules="[() => !!aceptar || 'This field is required']"
-              :items="acuerdo"
-              v-model="acuerdo"
-              label="Estoy de acuerdo en participar de esta evaluación"
-              required
-               solo-inverted
-            ></v-autocomplete>
+                        
           </v-card-text>
           <v-divider class="mt-5"></v-divider>
           <v-card-actions>
@@ -184,16 +176,16 @@ export default{
        const sheet2 =  await doc.addSheet()
 
        await sheet2.updateProperties({ title: id  });
-       var header = ['escenario','pregunta','respuesta','solucion','tinicio','tfin','tiempo','errores','cantNodos','peso','ruta','matriz','cumplio','optima','identProblema','aspectos','sustentar']
+       var header = ['escenario','pregunta','parte','respuesta','solucion','tinicio','tfin','tiempo','errores','cantNodos','peso','ruta','matriz','cumplio','optima','identProblema','aspectos','sustentar','devuelvo','direccion','for','condicional','probado']
        await sheet2.setHeaderRow(header);
-        await sheet2.loadCells('A24:F25');
+        await sheet2.loadCells('A73:F74');
 
-      const cell1 =  sheet2.getCellByA1('A24');
-       const cell2 =  sheet2.getCellByA1('B24');
-       const cell3 =  sheet2.getCellByA1('C24');
-       const cell4 =  sheet2.getCellByA1('D24');
-       const celL5 =  sheet2.getCellByA1('E24');
-       const cell6 =  sheet2.getCellByA1('F24');
+      const cell1 =  sheet2.getCellByA1('A73');
+       const cell2 =  sheet2.getCellByA1('B73');
+       const cell3 =  sheet2.getCellByA1('C73');
+       const cell4 =  sheet2.getCellByA1('D73');
+       const celL5 =  sheet2.getCellByA1('E73');
+       const cell6 =  sheet2.getCellByA1('F73');
        
         cell1.value = 'Nombre'
         cell2.value = 'Edad'
@@ -203,12 +195,12 @@ export default{
         cell6.value = 'Acuerdo'  
       await sheet2.saveUpdatedCells(); 
         
-       const cell1b =  sheet2.getCellByA1('A25');
-       const cell2b =  sheet2.getCellByA1('B25');
-       const cell3b =  sheet2.getCellByA1('C25');
-       const cell4b =  sheet2.getCellByA1('D25');
-       const celL5b =  sheet2.getCellByA1('E25');
-       const cell6b =  sheet2.getCellByA1('F25');
+       const cell1b =  sheet2.getCellByA1('A74');
+       const cell2b =  sheet2.getCellByA1('B74');
+       const cell3b =  sheet2.getCellByA1('C74');
+       const cell4b =  sheet2.getCellByA1('D74');
+       const celL5b =  sheet2.getCellByA1('E74');
+       const cell6b =  sheet2.getCellByA1('F74');
         
         cell1b.value = nombre
         cell2b.value = edad

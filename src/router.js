@@ -48,32 +48,32 @@ const router = new VueRouter({
         },
         {
             name: 'Pregunta2a',
-            path: '/escenario1/pregunta2a',
+            path: '/escenario1/pregunta2a/:id',
             component: Pregunta2a
         },
         {
             name: 'Pregunta2b',
-            path: '/escenario1/pregunta2b',
+            path: '/escenario1/pregunta2b/:id',
             component: Pregunta2b
         },
         {
             name: 'Pregunta2c',
-            path: '/escenario1/pregunta2c',
+            path: '/escenario1/pregunta2c/:id',
             component: Pregunta2c
         },
         {
             name: 'Pregunta3a',
-            path: '/escenario1/pregunta3a',
+            path: '/escenario1/pregunta3a/:id',
             component: Pregunta3a
         },
         {
             name: 'Pregunta3b',
-            path: '/escenario1/pregunta3b',
+            path: '/escenario1/pregunta3b/:id',
             component: Pregunta3b
         },
         {
             name: 'Pregunta3c',
-            path: '/escenario1/pregunta3c',
+            path: '/escenario1/pregunta3c/:id',
             component: Pregunta3c
         }
     ]

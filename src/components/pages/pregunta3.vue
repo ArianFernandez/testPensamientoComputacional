@@ -297,9 +297,9 @@ export default {
       lastLine.points = [lastLine.points[0], lastLine.points[1], pos.x, pos.y];
     },
     submit () {
-        alert('Gracias por participar')
 
-      window.location.href = '/' 
+            window.location.href = '/escenario1/pregunta2a/' + this.id
+
 
     },
     handleMouseUp(e) {
@@ -470,7 +470,13 @@ export default {
           optima: vPeso,
           identProblema: ip,
           aspectos: aspectos,
-          sustentar: 'saf'
+          sustentar: 'saf',
+          probado: '-',
+          devuelvo: '-',
+          direccion: '-',
+          for: '-',
+          parte:1,
+          condicional: '-'
         });
         this.contador +=1
 

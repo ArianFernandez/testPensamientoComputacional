@@ -117,6 +117,7 @@
       outlined
       color="primary"
       dark
+      @click="submit"
       >
       Siguiente  
     </v-btn>
@@ -200,8 +201,8 @@ function generarBordes(cirecle){
         });
 }
 export default{
-  data: () => ({
-   
+  data() {
+   return {
     targets: generateTargets(),
     targets2: generateTargets2(),
     anguloDir:
@@ -233,9 +234,10 @@ export default{
       matrizT:[],
       rutaCorrecta:[112 ,4 ,112 ,2 ,112 ,6 ,112 ,8 ,112],
       rutaTemp:[112],
-      cump: 'no'
+      cump: 'no',
+      id:this.$route.params.id 
 
-  }),
+  }},
 
   methods: {
       handleMouseDown(e) {
@@ -254,6 +256,12 @@ export default{
       });
 
       this.tiMatriz = Date.now();
+
+    },
+    submit () {
+
+            window.location.href = '/escenario1/pregunta2b/' + this.id
+
 
     },
     handleMouseMove(e) {
@@ -359,7 +367,7 @@ console.log('cos: '+r)
        doc.loadInfo();
        var V = []
        V.push({id:11})
-       const sheet2 =   doc.sheetsByTitle['prueba']
+       const sheet2 =   doc.sheetsByTitle[this.id]
        const moreRows =  sheet2.addRows(this.respuestas)
         console.log(moreRows)
     },
@@ -383,7 +391,11 @@ console.log('cos: '+r)
           devuelvo: '-',
           direccion: '-',
           for: '-',
-          condicional: '-'
+          condicional: '-',
+          respuesta: 'x',
+          solucion: 'x',
+          cantNodos: 'x',
+          peso: 'x'
         });
         this.contador +=1
         this.contS += 1
