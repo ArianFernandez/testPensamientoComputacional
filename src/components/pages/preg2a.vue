@@ -3,13 +3,13 @@
   <v-app id="inspire" dark>
   <v-container class="grey lighten-5">
     <v-row no-gutters>
-      <v-card
-          class="pa-2 justify-center"
-          outlined
-          tile
-        >
-          <img :src="image" >
-        </v-card>
+      
+        
+          <div class="col-2"></div>
+          <div class="col-6"> 
+          <img :src="image" class="rounded">
+          </div>
+          <div class="col-3"></div>
     </v-row>
 
     <v-row no-gutters>
@@ -63,8 +63,8 @@
             stroke: 'black',
             fill: 'yellow',
              numPoints: 6,
-        innerRadius: 20,
-        outerRadius: 30,
+        innerRadius: 10,
+        outerRadius: 10,
             
           }"
         />
@@ -73,6 +73,7 @@
       <v-layer ref="dragLayer"></v-layer>
     </v-stage>
         </v-card>
+        
       </v-col>
       <v-col
         cols="6"
@@ -97,13 +98,27 @@
           label="Aspectos Importantes"
           value=""
         ></v-textarea>
+        <v-textarea
+          name="input-7-1"
+          id="aspectos"
+
+          label="Sustentar solucion"
+          value=""
+        ></v-textarea>
         <v-btn
+      rounded
+      color="primary"
+      dark
+      v-on:click="enviarData">
+      Guardar solucion   
+    </v-btn>
+    <v-btn
       rounded
       outlined
       color="primary"
       dark
-      v-on:click="enviarData">
-      Añadir Solucion   
+      >
+      Siguiente  
     </v-btn>
         </v-card>
       </v-col>
@@ -210,7 +225,16 @@ export default{
       circulo2:0,
       conexiones:[],
       ruta:[],
-      rutaMatriz:[]
+      rutaMatriz:[],
+      tiempoI: 0,
+      tiempoF: 0,
+      tiMatriz:0,
+      tfMAtriz:0,
+      matrizT:[],
+      rutaCorrecta:[112 ,4 ,112 ,2 ,112 ,6 ,112 ,8 ,112],
+      rutaTemp:[112],
+      cump: 'no'
+
   }),
 
   methods: {
@@ -228,6 +252,9 @@ export default{
         id: Date.now(),
         points: [(e.target.x()), (e.target.y())]
       });
+
+      this.tiMatriz = Date.now();
+
     },
     handleMouseMove(e) {
       if (!this.drawningLine) {
@@ -276,6 +303,13 @@ console.log('cos: '+r)
         e.target.x()+((this.cosD(x2))),
         e.target.y()+(-1*(this.sinD(y2)))
       ];
+      this.tfMatriz = Date.now();
+        var tiempoTotal = this.tfMatriz - this.tiMatriz
+        this.matrizT.push(tiempoTotal)
+
+    this.rutaTemp.push(this.circulo2)
+
+
     },
     calcularDireccion(x1,y1,x2,y2){
       var v1 = ''
@@ -332,20 +366,24 @@ console.log('cos: '+r)
         addRow(err,ruta,ip,aspectos,tiempo,contador,tiempoI,tiempoF,matriz,vPeso,nodoF){
         this.respuestas.push({ 
           escenario: 1,
-          pregunta: 2,
-          respuesta: contador,
-          solucion: 'borrador',
+          pregunta: 1,
+          parte:1,
           tinicio: tiempoI ,
           tfin: tiempoF,
           tiempo: tiempo,
           ruta: ruta,
           matriz: matriz,
           cumplio: nodoF,
-          optima: vPeso,
+          optima: '-',
           identProblema: ip,
           aspectos: aspectos,
-          sustentar: 'saf',
-          errores: err
+          sustentar: '',
+          errores: "-",
+          probado: '-',
+          devuelvo: '-',
+          direccion: '-',
+          for: '-',
+          condicional: '-'
         });
         this.contador +=1
         this.contS += 1
@@ -365,13 +403,49 @@ console.log('cos: '+r)
         return total
     },
     enviarData: function (event) {
+      this.tiempoF = Date.now();
+        var tI = new Date(this.tiempoI);
+        var tf = new Date(this.tiempof);
+        var tt = new Date(this.tiempoF-this.tiempoI);
+
         var rutaT = this.getRuta()
-        this.addRow(1,rutaT,1,1,1,1,1,1,1,1,1)
+        this.addRow(1,rutaT,1,1,tt,1,tI,tf,this.getMatrizT(),1,this.validarSolucion())
         this.sendRow()
         if (event) {
         alert('Se añadio la respuesta')
       }
     },
-  }
+    startTimer: function() {
+      this.tiempoI = Date.now();
+    },
+    getMatrizT(){
+    var total = ''
+
+        this.matrizT.forEach(element => {
+            total = total.concat(element/1000)
+            total = total.concat(' ,')
+
+        });
+
+        return total
+    },
+    validarSolucion(){ 
+      console.log(this.rutaTemp)
+      console.log(this.rutaCorrecta)
+
+      var val = 'si'
+      for (var i = 0; i < this.rutaCorrecta.length ; i++) {
+          if(this.rutaTemp[i] != this.rutaCorrecta[i]){
+              val = 'no'
+     }
+        }
+
+
+     return val
+   }
+  },
+  beforeMount(){
+    this.startTimer()
+ },
 }
 </script>

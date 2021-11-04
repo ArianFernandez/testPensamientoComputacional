@@ -2,15 +2,7 @@
    <div id="app">
   <v-app id="inspire" dark>
   <v-container class="grey lighten-5">
-    <v-row no-gutters>
-      <v-card
-          class="pa-2 justify-center"
-          outlined
-          tile
-        >
-          <img :src="image" >
-        </v-card>
-    </v-row>
+    
 
     <v-row no-gutters>
       <v-col
@@ -75,6 +67,7 @@
       <v-layer ref="dragLayer"></v-layer>
     </v-stage>
         </v-card>
+        
       </v-col>
       <v-col
         cols="6"
@@ -99,14 +92,64 @@
           label="Aspectos Importantes"
           value=""
         ></v-textarea>
+        <v-textarea
+          name="input-7-1"
+          id="aspectos"
+
+          label="Sustentar solucion"
+          value=""
+        ></v-textarea>
         <v-btn
+      rounded
+      color="primary"
+      dark
+      v-on:click="enviarData">
+      Guardar Solucion   
+    </v-btn>
+<v-btn
       rounded
       outlined
       color="primary"
       dark
       v-on:click="enviarData">
-      Añadir Solucion   
+      Siguiente  
     </v-btn>
+    <v-dialog
+      v-model="dialog"
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="text-h5">
+          Ups!
+        </v-card-title>
+
+        <v-card-text>
+         Choco con el fantasma
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="guardarSolucion"
+          >
+            Guardar <br> Solucion
+
+          </v-btn>
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="intentar"
+          >
+            Intentar <br> denuevo
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+      
         </v-card>
       </v-col>
     </v-row>
@@ -188,7 +231,7 @@ function generarBordes(cirecle){
 }
 export default{
   data: () => ({
-   
+   dialog: false,
     targets: generateTargets(),
     targets2: generateTargets2(),
     anguloDir:
@@ -215,7 +258,15 @@ export default{
       rutaMatriz:[],
       rutaFantasma: [4,112,8,112,6,112,2,112],
       contador:0,
-      rutaTemp: []
+      rutaTemp: [],
+      errores: 0,
+      tiempoI: 0,
+      tiempoF: 0,
+      tiMatriz:0,
+      tfMAtriz:0,
+      matrizT:[],
+      cum: 'no'
+
   }),
 
   methods: {
@@ -226,6 +277,7 @@ export default{
       }
       this.drawningLine = true;
 
+      this.tiMatriz = Date.now();
 
       this.circulo1 = e.target.id()
       this.connections.push({
@@ -280,11 +332,20 @@ var r = Math.round(40*(Math.cos(angle * Math.PI / 180)))
         e.target.y()+(-1*(this.sinD(y2)))
       ];
       this.contador += 1
+
+      this.tfMatriz = Date.now();
+        var tiempoTotal = this.tfMatriz - this.tiMatriz
+        this.matrizT.push(tiempoTotal)
+      
         if(this.validarChoque()){
-        window.alert("Choco con el fantasma");
+
+          this.dialog = true
+
         this.cleanRoute()
         return;
       }
+
+
     },
     calcularDireccion(x1,y1,x2,y2){
       var v1 = ''
@@ -339,21 +400,25 @@ var r = Math.round(40*(Math.cos(angle * Math.PI / 180)))
     },
         addRow(err,ruta,ip,aspectos,tiempo,contador,tiempoI,tiempoF,matriz,vPeso,nodoF){
         this.respuestas.push({ 
-          escenario: 1,
+          escenario: 2,
           pregunta: 2,
-          respuesta: contador,
-          solucion: 'borrador',
+          parte:1,
           tinicio: tiempoI ,
           tfin: tiempoF,
           tiempo: tiempo,
           ruta: ruta,
           matriz: matriz,
           cumplio: nodoF,
-          optima: vPeso,
+          optima: '-',
           identProblema: ip,
           aspectos: aspectos,
-          sustentar: 'saf',
-          errores: err
+          sustentar: '',
+          errores: err,
+          probado: '-',
+          devuelvo: '-',
+          direccion: '-',
+          for: '-',
+          condicional: '-'
         });
         this.contador +=1
         this.contS += 1
@@ -361,7 +426,7 @@ var r = Math.round(40*(Math.cos(angle * Math.PI / 180)))
 
     },
     getRuta(){
-        var total = '112'
+        var total = '7'
 
         this.conexiones.forEach(element => {
           this.totalNodos +=1
@@ -373,8 +438,13 @@ var r = Math.round(40*(Math.cos(angle * Math.PI / 180)))
         return total
     },
     enviarData: function (event) {
+            this.tiempoF = Date.now();
+
+      var tI = new Date(this.tiempoI);
+        var tf = new Date(this.tiempoF);
+        var tt = this.tiempoF-this.tiempoI;
         var rutaT = this.getRuta()
-        this.addRow(1,rutaT,1,1,1,1,1,1,1,1,1)
+        this.addRow(this.errores,rutaT,1,1,tt/1000,1,tI.toUTCString(),tf.toUTCString(),this.getMatrizT(),1,this.cum)
         this.sendRow()
         this.animate()
         if (event) {
@@ -400,25 +470,35 @@ var r = Math.round(40*(Math.cos(angle * Math.PI / 180)))
 
         this.contador = 0
     },
-    animate(){
-          const vm = this;
+    intentar(){
+        this.errores +=1
+      this.tiempoI = Date.now();
 
-      const amplitude = 100;
-    const period = 5000;
-    // in ms
-    const centerX = vm.$refs.stage.getNode().getWidth() / 2;
-        const pacman = this.$refs.ghost.getNode();
-            const anim = new Konva.Animation(function(frame) {
-      pacman.setX(
-        amplitude * Math.sin((frame.time * 2 * Math.PI) / period) + centerX
-      );
-      pacman.move({x: 400, y: 350});
-
-}, pacman.getLayer());
-
-    anim.start();
+        this.dialog = false
     },
+    guardar(){
 
-  }
+
+      this.enviarData()
+    },
+    startTimer: function() {
+      this.tiempoI = Date.now();
+    },
+    getMatrizT(){
+    var total = ''
+
+        this.matrizT.forEach(element => {
+            total = total.concat(element/1000)
+            total = total.concat(' ,')
+
+        });
+
+        return total
+    }
+
+  },
+  beforeMount(){
+    this.startTimer()
+ },
 }
 </script>

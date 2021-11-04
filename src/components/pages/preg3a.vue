@@ -14,6 +14,7 @@
           tile
           height="600px"
         >
+          <img :src="image" width="316" height="316" >
   
         </v-card>
       </v-col>
@@ -142,115 +143,15 @@ const {
 function generateTargets() {
     const circles = [
 
-        {
-            x: 200,
-            y: 50,
-            id: 1,
-            color: 'green',
-            con: {
-                3: 5
-            },
-            puntosBorde: []
-        },
-        {
-            x: 400,
-            y: 50,
-            id: 2,
-            color: 'green',
-            con: {
-                112: 10,
-                3: 1,
-                5: 1,
-                6: 3
-            },
-            puntosBorde: []
-        },
-        {
-            x: 600,
-            y: 50,
-            id: 3,
-            color: 'green',
-            con: {
-                112: 5,
-                2: 1,
-                4: 1,
-                10: 10
-            },
-            puntosBorde: []
-        },
-        {
-            x: 200,
-            y: 200,
-            id: 4,
-            color: 'green',
-            con: {
-                3: 1,
-                7: 3,
-                9: 5
-            },
-            puntosBorde: []
-        },
-        {
-            x: 400,
-            y: 200,
-            id: 112,
-            color: 'blue',
-            con: {
-                112: 3,
-                2: 1,
-                8: 5
-            },
-            puntosBorde: []
-        },
-        {
-            x: 600,
-            y: 200,
-            id: 6,
-            color: 'green',
-            con: {
-                2: 3,
-                3: 1,
-                5: 5
-            },
-            puntosBorde: []
-        },
-        {
-            x: 200,
-            y: 350,
-            id: 7,
-            color: 'green',
-            con: {
-                3: 3,
-                4: 3,
-                9: 1,
-                10: 10
-            },
-            puntosBorde: []
-        },
-        {
-            x: 400,
-            y: 350,
-            id: 8,
-            color: 'green',
-            con: {
-                5: 5,
-                6: 5,
-                10: 3
-            },
-            puntosBorde: []
-        },
-        {
-            x: 600,
-            y: 350,
-            id: 9,
-            color: 'green',
-            con: {
-                5: 5,
-                6: 5,
-                10: 3
-            },
-            puntosBorde: []
-        }
+        {x:200,y:50,id:1,color:'green',con:{3:5},puntosBorde:[]},
+    {x:400,y:50,id:2,color:'green',con:{112:10,3:1,5:1,6:3},puntosBorde:[]},
+    {x:600,y:50,id:3,color:'green',con:{112:5,2:1,4:1,10:10},puntosBorde:[]},
+    {x:200,y:200,id:4,color:'green',con:{3:1,7:3,9:5},puntosBorde:[]},
+    {x:400,y:200,id:112,color:'blue',con:{112:3,2:1,8:5},puntosBorde:[]},
+    {x:600,y:200,id:6,color:'green',con:{2:3,3:1,5:5},puntosBorde:[]},
+    {x:200,y:350,id:7,color:'green',con:{3:3,4:3,9:1,10:10},puntosBorde:[]},
+    {x:400,y:350,id:8,color:'green',con:{5:5,6:5,10:3},puntosBorde:[]},
+    {x:600,y:350,id:9,color:'green',con:{5:5,6:5,10:3},puntosBorde:[]}
 
     ];
 
@@ -284,20 +185,21 @@ export default {
     downL:225,
     left:180,
     upL:135},
+      image: require('@/assets/Pacman_Sol.png'),
+
     stageSize: {
         width: width,
         height: height
       },
       connections: [],
       drawningLine: false,
-      image: require('@/assets/ejemplo.jpg'),
       respuestas: [],
       circulo1:0,
       circulo2:0,
       conexiones:[],
       ruta:[],
       rutaMatriz:[],
-      rutaFantasma: [4,112,8,112,6,112,2,112],
+      rutaCorrecta: [8,4,112,3],
       contador:0,
       rutaTemp: []
 
@@ -365,11 +267,7 @@ var r = Math.round(40*(Math.cos(angle * Math.PI / 180)))
         e.target.y()+(-1*(this.sinD(y2)))
       ];
       this.contador += 1
-        if(this.validarChoque()){
-        window.alert("Choco con el fantasma");
-        this.cleanRoute()
-        return;
-      }
+        
     },
     calcularDireccion(x1,y1,x2,y2){
       var v1 = ''
@@ -409,8 +307,23 @@ var r = Math.round(40*(Math.cos(angle * Math.PI / 180)))
 
       return {v1,v2};
     },
-   validarSolucion(){
+   validarSolucion(){ 
+      console.log(this.rutaTemp)
+      console.log(this.rutaCorrecta)
 
+      var val = true
+      for (var i = 0; i < this.rutaCorrecta.length ; i++) {
+          if(this.rutaTemp[i] != this.rutaCorrecta[i]){
+              val = false
+     }
+        }
+
+
+     if(val){
+      console.log('this.rutaCorrecta')
+
+        alert("Respuesta correcta");
+     }
    }
        
     }
