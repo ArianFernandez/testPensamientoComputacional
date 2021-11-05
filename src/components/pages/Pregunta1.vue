@@ -528,6 +528,7 @@ export default {
         console.log(moreRows)
         console.log(event)
 
+        alert('Se guardo la solucion')
       
 
     },
