@@ -401,6 +401,8 @@ this.cleanRoute()
    },
    guardarSolucion(){
       this.enviarData()
+        alert('Se guardo la respuesta. Presionar siguiente')
+
     },
    pasarPregunta(){
         window.location.href = '/escenario1/pregunta3c/' + this.id

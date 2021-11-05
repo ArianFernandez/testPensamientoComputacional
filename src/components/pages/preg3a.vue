@@ -399,6 +399,8 @@ var r = Math.round(40*(Math.cos(angle * Math.PI / 180)))
    },
    guardarSolucion(){
       this.enviarData()
+        alert('Se guardo la respuesta. Presionar siguiente')
+
     },
    pasarPregunta(){
         window.location.href = '/escenario1/pregunta3b/' + this.id

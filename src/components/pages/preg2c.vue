@@ -603,8 +603,10 @@ export default {
 
         this.addRow(this.errores,'-',1,1,tt/1000,1,tI.toUTCString(),tf.toUTCString(),'-',this.cum,this.cum )
         this.sendRow()
+        alert('Se guardo la respuesta. Presionar siguiente')
+
         if (event) {
-        alert('Se añadio la respuesta')
+        alert('Se guardo la respuesta. Presionar siguiente')
       }
     },
     onResize: function (x, y, width, height) {

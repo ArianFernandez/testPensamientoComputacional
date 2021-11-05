@@ -519,7 +519,7 @@ this.aspectos = document.getElementById("aspectos").value;
         this.addRow(1,rutaT,1,1,tt/1000,1,tI.toUTCString(),tf.toUTCString(),this.getMatrizT(),1,this.validarSolucion())
         this.sendRow()
         if (event) {
-        alert('Se guardo la respuesta')
+        alert('Se guardo la respuesta. Presionar siguiente')
       }
     },
     startTimer: function() {

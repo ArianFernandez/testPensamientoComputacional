@@ -524,6 +524,7 @@ this.aspectos = document.getElementById("aspectos").value;
         this.cleanRoute()
         if (event) {
         // alert('Se añadio la respuesta')
+        alert('Se guardo la respuesta. Presionar siguiente')
 
       }
       // this.pasaPregunta()

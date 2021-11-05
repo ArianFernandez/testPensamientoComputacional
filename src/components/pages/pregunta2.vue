@@ -511,7 +511,8 @@ export default {
         const moreRows =  sheet2.addRows(this.respuestas)
         console.log(moreRows)
         console.log(event)
-        alert('Se guardo la solucion')
+                alert('Se guardo la solucion. Presionar siguiente')
+
 
 
       

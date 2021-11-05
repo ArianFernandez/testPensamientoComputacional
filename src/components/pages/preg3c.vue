@@ -253,6 +253,8 @@ export default {
         }
         this.addRow()
         this.sendRow()
+        alert('Se guardo la respuesta. Presionar siguiente')
+
     },
      sendRow(){
       doc.useServiceAccountAuth({
