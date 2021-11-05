@@ -3,6 +3,32 @@
     <v-row
       :class=" 'mb-12' "
       no-gutters
+      
+    >
+      <v-col
+        :key=4
+        cols="12"
+        align="center"
+      justify="center"
+      >
+        <v-card
+          class="pa-2 mx-auto"
+          outlined
+          
+          tile
+          height="50px"
+        >
+        
+        <h1>Escenario 2 - Pregunta 2 - Parte 2 - Crea una nueva solucion, ahora con bloques</h1>
+        
+        </v-card>
+      </v-col>
+
+            
+    </v-row>
+    <v-row
+      :class=" 'mb-12' "
+      no-gutters
     >
       <v-col
         :key=4
@@ -90,12 +116,31 @@
         >
   <div class="text-center">
     <v-btn
-      rounded
+      id = 'probar'
       color="primary"
+      rounded
       dark
       v-on:click="validarSolucion"
     >
       Probar solucion
+    </v-btn>
+    <v-btn
+      id = 'probar'
+      color="primary"
+      rounded
+      dark
+      v-on:click="guardarSolucion"
+    >
+      Guardar solucion
+    </v-btn>
+    <v-btn
+      color="primary"
+      rounded
+      dark
+      outlined
+      v-on:click="pasarPregunta"
+    >
+      Siguiente
     </v-btn>
   </div>
         </v-card>
@@ -159,7 +204,7 @@ function generateTargets() {
             x: 600,
             y: 50,
             id: 3,
-            color: 'green',
+            color: 'yellow',
             con: {
                 112: 5,
                 2: 1,
@@ -330,11 +375,13 @@ export default {
       tiMatriz:0,
       tfMAtriz:0,
       cum : 'no',
+      opt: 'no',
       cond : 0,
       for : 0,
       dir:0,
       dev :0,
       errores:0,
+      probado:0,
       id:this.$route.params.id 
 
     }},
@@ -376,9 +423,22 @@ export default {
               if(this.posiciones['b8'][0]>575){
                 this.cond = this.cond + 1 
               }
-              if(this.posiciones['b3'][0]>575 || this.posiciones['b2'][0]>575 || this.posiciones['b4'][0]>575 || this.posiciones['b5'][0]>575){
+              if(this.posiciones['b3'][0]>575 ){
                 this.dir = this.dir + 1 
               }
+              if(this.posiciones['b2'][0]>575){
+                this.dir = this.dir + 1 
+              }
+              if(this.posiciones['b4'][0]>575){
+                this.dir = this.dir + 1 
+              }
+              if(this.posiciones['b5'][0]>575){
+                this.dir = this.dir + 1 
+              }
+              if(this.posiciones['b2b'][0]>575){
+                this.dir = this.dir + 1 
+              }
+              
 
       }
       if(this.posiciones['b6'][1]-this.posiciones['b1'][1]<70 && this.posiciones['b6'][1]-this.posiciones['b1'][1]>0 &&
@@ -408,19 +468,21 @@ export default {
               console.log('correcto')
               val = true
               this.cum = 'si'
+              this.opt = 'si'
 
 
 
       }
 
       if(val){
-        this.enviarData()
+        this.cum = 'si'
+      this.probado = this.probado + 1
 
         alert('Respuesta correcta')
-        window.location.href = '/escenario1/pregunta3a/' + this.id
 
       }else{
-        this.enviarData()
+        // this.enviarData()
+      this.probado = this.probado + 1
 
         alert('Respuesta incorrecta')
 
@@ -431,6 +493,13 @@ export default {
 
       }
     return val
+    },
+    guardarSolucion(){
+      this.enviarData()
+    },
+    pasarPregunta(){
+        window.location.href = '/escenario1/pregunta3a/' + this.id
+
     },
     sendRow(){
       doc.useServiceAccountAuth({
@@ -456,12 +525,12 @@ export default {
           ruta: ruta,
           matriz: matriz,
           cumplio: nodoF,
-          optima: vPeso,
+          optima: this.opt,
           identProblema: '-',
           aspectos: '-',
           sustentar: '',
-          errores: "-",
-          probado: '-',
+          errores: this.errores,
+          probado: this.probado,
           devuelvo: this.dev,
           direccion: this.dir,
           for: this.for,

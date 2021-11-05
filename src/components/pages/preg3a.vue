@@ -3,6 +3,32 @@
     <v-row
       :class=" 'mb-12' "
       no-gutters
+      
+    >
+      <v-col
+        :key=4
+        cols="12"
+        align="center"
+      justify="center"
+      >
+        <v-card
+          class="pa-2 mx-auto"
+          outlined
+          
+          tile
+          height="50px"
+        >
+        
+        <h1>Escenario 2 - Pregunta 3 - Parte 1 - Solucion Pacman</h1>
+        
+        </v-card>
+      </v-col>
+
+            
+    </v-row>
+    <v-row
+      :class=" 'mb-12' "
+      no-gutters
     >
       <v-col
         :key=4
@@ -108,6 +134,24 @@
     >
       Probar solucion
     </v-btn>
+    <v-btn
+      id = 'probar'
+      color="primary"
+      rounded
+      dark
+      v-on:click="guardarSolucion"
+    >
+      Guardar solucion
+    </v-btn>
+    <v-btn
+      color="primary"
+      rounded
+      dark
+      outlined
+      v-on:click="pasarPregunta"
+    >
+      Siguiente
+    </v-btn>
   </div>
         </v-card>
       </v-col>
@@ -210,7 +254,8 @@ export default {
       tfMAtriz:0,
       matrizT:[],
       cum: 'no',
-      id:this.$route.params.id 
+      id:this.$route.params.id,
+      probado: 0
 
     }},
 
@@ -336,21 +381,29 @@ var r = Math.round(40*(Math.cos(angle * Math.PI / 180)))
      if(val){
       console.log('this.rutaCorrecta')
       this.cum ='si'
-        this.enviarData()
         alert("Respuesta correcta");
-        window.location.href = '/escenario1/pregunta3b/' + this.id
+        // window.location.href = '/escenario1/pregunta3b/' + this.id
+        this.probado = this.probado + 1
+
 
      }else{
       this.cum ='no'
       this.tiempoI = Date.now();
         alert("Respuesta incorrecta");
+        this.probado = this.probado + 1
 
         this.errores = this.errores + 1
-this.cleanRoute()
-        this.enviarData()
+    this.cleanRoute()
 
      }
    },
+   guardarSolucion(){
+      this.enviarData()
+    },
+   pasarPregunta(){
+        window.location.href = '/escenario1/pregunta3b/' + this.id
+
+    },
    sendRow(){
       doc.useServiceAccountAuth({
       client_email: 'arianf@dotted-medley-326516.iam.gserviceaccount.com',
@@ -380,7 +433,7 @@ this.cleanRoute()
           aspectos: '-',
           sustentar: '',
           errores: err,
-          probado: '-',
+          probado: this.probado,
           devuelvo: '-',
           direccion: '-',
           for: '-',

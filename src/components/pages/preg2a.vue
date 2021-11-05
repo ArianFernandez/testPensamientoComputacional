@@ -2,6 +2,32 @@
    <div id="app">
   <v-app id="inspire" dark>
   <v-container class="grey lighten-5">
+    <v-row
+      :class=" 'mb-12' "
+      no-gutters
+      
+    >
+      <v-col
+        :key=4
+        cols="12"
+        align="center"
+      justify="center"
+      >
+        <v-card
+          class="pa-2 mx-auto"
+          outlined
+          
+          tile
+          height="50px"
+        >
+        
+        <h1>Escenario 2 - Pregunta 1 - Descubre el patron del fantasma</h1>
+        
+        </v-card>
+      </v-col>
+
+            
+    </v-row>
     <v-row no-gutters>
       
         
@@ -86,9 +112,9 @@
         >
           <v-textarea
           name="input-7-1"
-          id="aspectos"
+          id="ident"
 
-          label="Aspectos Importantes"
+          label="Identifiacion del problema"
           value=""
         ></v-textarea>
         <v-textarea
@@ -100,7 +126,7 @@
         ></v-textarea>
         <v-textarea
           name="input-7-1"
-          id="aspectos"
+          id="sustentar"
 
           label="Sustentar solucion"
           value=""
@@ -230,6 +256,10 @@ export default{
       tiempoI: 0,
       tiempoF: 0,
       tiMatriz:0,
+      aspectos:'',
+    sustentar:'',
+    ident:'',
+
       tfMAtriz:0,
       matrizT:[],
       rutaCorrecta:[112 ,4 ,112 ,2 ,112 ,6 ,112 ,8 ,112],
@@ -367,6 +397,9 @@ console.log('cos: '+r)
        doc.loadInfo();
        var V = []
        V.push({id:11})
+       
+
+
        const sheet2 =   doc.sheetsByTitle[this.id]
        const moreRows =  sheet2.addRows(this.respuestas)
         console.log(moreRows)
@@ -383,9 +416,9 @@ console.log('cos: '+r)
           matriz: matriz,
           cumplio: nodoF,
           optima: '-',
-          identProblema: ip,
-          aspectos: aspectos,
-          sustentar: '',
+          identProblema: this.ident,
+          aspectos: this.aspectos,
+          sustentar: this.sustentar,
           errores: "-",
           probado: '-',
           devuelvo: '-',
@@ -419,7 +452,9 @@ console.log('cos: '+r)
         var tI = new Date(this.tiempoI);
         var tf = new Date(this.tiempof);
         var tt = new Date(this.tiempoF-this.tiempoI);
-
+this.aspectos = document.getElementById("aspectos").value; 
+        this.sustentar = document.getElementById("sustentar").value; 
+        this.ident = document.getElementById("ident").value; 
         var rutaT = this.getRuta()
         this.addRow(1,rutaT,1,1,tt,1,tI,tf,this.getMatrizT(),1,this.validarSolucion())
         this.sendRow()

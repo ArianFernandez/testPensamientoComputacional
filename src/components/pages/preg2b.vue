@@ -2,7 +2,32 @@
    <div id="app">
   <v-app id="inspire" dark>
   <v-container class="grey lighten-5">
-    
+    <v-row
+      :class=" 'mb-12' "
+      no-gutters
+      
+    >
+      <v-col
+        :key=4
+        cols="12"
+        align="center"
+      justify="center"
+      >
+        <v-card
+          class="pa-2 mx-auto"
+          outlined
+          
+          tile
+          height="50px"
+        >
+        
+        <h1>Escenario 2 - Pregunta 2 - Parte 1 - Crea tu solucion</h1>
+        
+        </v-card>
+      </v-col>
+
+            
+    </v-row>
 
     <v-row no-gutters>
       <v-col
@@ -80,9 +105,9 @@
         >
           <v-textarea
           name="input-7-1"
-          id="aspectos"
+          id="ident"
 
-          label="Aspectos Importantes"
+          label="Identificacion del problema"
           value=""
         ></v-textarea>
         <v-textarea
@@ -94,7 +119,7 @@
         ></v-textarea>
         <v-textarea
           name="input-7-1"
-          id="aspectos"
+          id="sustentar"
 
           label="Sustentar solucion"
           value=""
@@ -111,7 +136,7 @@
       outlined
       color="primary"
       dark
-      v-on:click="enviarData">
+      v-on:click="pasaPregunta">
       Siguiente  
     </v-btn>
     <v-dialog
@@ -130,21 +155,42 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn
-            color="green darken-1"
-            text
-            @click="guardarSolucion"
-          >
-            Guardar <br> Solucion
-
-          </v-btn>
+          
 
           <v-btn
             color="green darken-1"
             text
-            @click="intentar"
+            @click="pasaPregunta"
           >
             Intentar <br> denuevo
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog
+      v-model="dialog2"
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="text-h5">
+          Ye!
+        </v-card-title>
+
+        <v-card-text>
+         Lo lograste
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="dialog2=false"
+          >
+            Ok
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -189,7 +235,7 @@ function generateTargets() {
     {x:600,y:200,id:6,color:'green',con:{2:3,3:1,5:5},puntosBorde:[]},
     {x:200,y:350,id:7,color:'green',con:{3:3,4:3,9:1,10:10},puntosBorde:[]},
     {x:400,y:350,id:8,color:'green',con:{5:5,6:5,10:3},puntosBorde:[]},
-    {x:600,y:350,id:9,color:'green',con:{5:5,6:5,10:3},puntosBorde:[]}
+    {x:600,y:350,id:9,color:'red',con:{5:5,6:5,10:3},puntosBorde:[]}
 
   ];
 
@@ -233,6 +279,7 @@ export default{
   data() {
     return{
    dialog: false,
+   dialog2:false,
     targets: generateTargets(),
     targets2: generateTargets2(),
     anguloDir:
@@ -243,6 +290,7 @@ export default{
     down:270,
     downL:225,
     left:180,
+    
     upL:135},
     stageSize: {
         width: width,
@@ -257,16 +305,19 @@ export default{
       conexiones:[],
       ruta:[],
       rutaMatriz:[],
-      rutaFantasma: [4,112,8,112,6,112,2,112],
+      rutaFantasma: [4,112,2,112,6,112,8,112],
       contador:0,
       rutaTemp: [],
+      aspectos:'',
+    sustentar:'',
+    ident:'',
       errores: 0,
       tiempoI: 0,
       tiempoF: 0,
       tiMatriz:0,
       tfMAtriz:0,
       matrizT:[],
-      cum: 'no',
+      cumplio: 'no',
       id:this.$route.params.id 
 
   }},
@@ -348,6 +399,10 @@ var r = Math.round(40*(Math.cos(angle * Math.PI / 180)))
         return;
       }
 
+      if(this.circulo2==3){
+        this.dialog2 = true
+      }
+
 
     },
     calcularDireccion(x1,y1,x2,y2){
@@ -388,18 +443,23 @@ var r = Math.round(40*(Math.cos(angle * Math.PI / 180)))
 
       return {v1,v2};
     },
-        sendRow(){
+         sendRow(){
       doc.useServiceAccountAuth({
       client_email: 'arianf@dotted-medley-326516.iam.gserviceaccount.com',
       private_key: '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDgCUx/AqfeaWV0\nL0fGMl0yLFSPk7itNcEe143qjziiCK3hIi8xpNZpeyw5Venb0E9Xjg5SY9uv/n61\nvpDIxIs5DfTE3ycc90iReGCIYHABLC1XHQ6Co8xhljsHtb7ro2kp7880KF5iUMK1\nOwE16SYhsBXUAGrH6fzbZDunQMOHXLrz0TbWfHdh53b9/aiKOmHeJ6NpulGAOtA/\nhKCNylC+KHgDzJiYrAhjGhiMI7O6Hj2bb9PKaP5ceGPJiVHJT1fC8Nz2aH30FpQX\n/IOI+eRZmJbPXDiFfAKhd9aouDK7KfROUnnd/ij9emawCrzAIKCrOJOgKQtQ41kZ\nacA2YfuvAgMBAAECggEAYpEExE6FT6+cMLlKgTMQWK4zR/XshtxDCpA4gm2fs35R\nDd9t1xAYO1EzPEiFuq2T8sfvmiUP9wbndYuRhJsgS6pNub4aJb7QARxukCGptYJb\nslt40lZBad/gObym8mIzNv2ocmCeYe/5MiXzGuZoXeLsP5ktYaYbFuUq76NpQyhg\n5nD9MGIFAD2i6VcOUsFIymhQRlOjZUtJVS3aRB4IrFGqZS//mv8Ig0yfGeSzBghv\nLnX7da6KovjqkhTzKiQKOBQaH2C9oJh5uHTz+T+dDrGoqhNca/2ok8B6oih54R+V\nWxm0Af/LRaJaAojIIF/wHk6VEWA9GfPoxL6WcumrTQKBgQDw2x8QitR0FF8+WICn\npTSUhqX2gOr2FWcDep0Tdan7Hta+az2sN7f1uUallAHeoA/SurvAIbvWn9kfbXvA\nTZqLK3BjKmpfANqvRo6IUTPynxamlf/05gUGAUlHOrl34ieqy6W+E6ZEjX+pCS5m\nJRrAvqE+YtvOIbitj2vo+cPiowKBgQDuH3HQex6GZHtiznaQqZNG8yRxySwIs2Yq\nkSiZtN2i2XCSVzaI4HGiKQF3smyFBiM8XkstYzOeQtNYBo6EsV7y/ZNpdeF1+q/F\nAb2izakKtKVTPFbEskFr/qdZhJA4935p//oz1ew4OHlaLo24vkwBq180LRLLy2BB\nMdeQRl6fhQKBgDW3KL5vt+ILiRJGeqro1UkqnmjTZ5NqQocsGUv1uesffZUKJb76\nzjQnFfJnh+M2n1DIBIdc/p9nFu1DZY4FwKm5Dl+PXhnB/wOIINGWCpfZkxuj6Gmd\nwxELyGPyXNq3vVECCfzSNQqk5Au22Ho/XDAQU7WuJodaTe2nRtG2olExAoGAOomy\nYg0SSPmEt5qH3TJCyWtWZz6MO6tWj1pV/8tNvQ31NZSJDIcYiEPKX5GWSfFjUiDg\nHE1J0DsfV4FtIcO00slxprha77Tr5uNxqgci6kXUaqznq70ihhj5LPGAvvBgvFA4\nQuvxATUo5/mPz33Ak5x8cAgwmbbqd7x4ALi75D0CgYEA5lxafnGk1GhZ/rUjd9tg\nlRDQoBPZi1SjBq4q+kztN3V2wWU/HmVF+ivkvz1W4X96ra7bNgpCSRI3N1Fhx7N1\nAA4gTjY7qxGhF3F62/eb/fLYYj7N6IV7MJnFJiPWEHyXB0qKliO+uTx7AVsEM2aa\nvIPa9JiF3qZYHqjfu5Rd/hY=\n-----END PRIVATE KEY-----\n',
       });
+this.aspectos = document.getElementById("aspectos").value; 
+        this.sustentar = document.getElementById("sustentar").value; 
+        this.ident = document.getElementById("ident").value; 
+
 
        doc.loadInfo();
        var V = []
        V.push({id:11})
        const sheet2 =   doc.sheetsByTitle[this.id]
-       const moreRows =  sheet2.addRows(this.respuestas)
-        window.location.href = '/escenario1/pregunta2c/' + this.id
+       const moreRows =   sheet2.addRows(this.respuestas)
+
+
 
         console.log(moreRows)
     },
@@ -415,9 +475,9 @@ var r = Math.round(40*(Math.cos(angle * Math.PI / 180)))
           matriz: matriz,
           cumplio: nodoF,
           optima: '-',
-          identProblema: ip,
-          aspectos: aspectos,
-          sustentar: '',
+          identProblema: this.ident,
+          aspectos: this.aspectos,
+          sustentar: this.sustentar,
           errores: err,
           probado: '-',
           devuelvo: '-',
@@ -453,14 +513,26 @@ var r = Math.round(40*(Math.cos(angle * Math.PI / 180)))
         var tf = new Date(this.tiempoF);
         var tt = this.tiempoF-this.tiempoI;
         var rutaT = this.getRuta()
-        this.addRow(this.errores,rutaT,1,1,tt/1000,1,tI.toUTCString(),tf.toUTCString(),this.getMatrizT(),1,this.cum)
+        this.validarCumplio()
+        this.aspectos = document.getElementById("aspectos").value; 
+        this.sustentar = document.getElementById("sustentar").value; 
+        this.ident = document.getElementById("ident").value; 
+        this.addRow(this.errores,rutaT,1,1,tt/1000,1,tI.toUTCString(),tf.toUTCString(),this.getMatrizT(),1,this.cumplio)
         this.sendRow()
-
+        this.cleanRoute()
         if (event) {
-        alert('Se añadio la respuesta')
+        // alert('Se añadio la respuesta')
+
       }
+      // this.pasaPregunta()
     },
-    validarChoque(){
+
+
+    pasaPregunta()
+{
+        window.location.href = '/escenario1/pregunta2c/' + this.id
+
+} ,   validarChoque(){
       console.log('conex: '+this.rutaTemp[this.contador-1])
         console.log('ruta: '+this.rutaFantasma[this.contador-1])
         if(this.rutaTemp[this.contador-1] == this.rutaFantasma[this.contador-1]){
@@ -476,6 +548,9 @@ var r = Math.round(40*(Math.cos(angle * Math.PI / 180)))
         this.ruta = []
         this.rutaMatriz = []
         this.rutaTemp = []
+        this.respuestas = []
+        this.matrizT = []
+
 
         this.contador = 0
     },
@@ -503,6 +578,15 @@ var r = Math.round(40*(Math.cos(angle * Math.PI / 180)))
         });
 
         return total
+    },
+    validarCumplio(){
+      var temp = 0
+      this.conexiones.forEach(element => {
+          temp = element.p2
+        });
+      if(temp==3){
+        this.cumplio = 'si'
+      }
     }
 
   },
