@@ -265,21 +265,35 @@ export default{
       rutaCorrecta:[112 ,4 ,112 ,2 ,112 ,6 ,112 ,8 ,112],
       rutaTemp:[112],
       cump: 'no',
-      id:this.$route.params.id 
+      id:this.$route.params.id,
+      inicio: false
 
   }},
 
   methods: {
       handleMouseDown(e) {
       const onCircle = e.target instanceof Konva.Circle;
+      
       if (!onCircle) {
         return;
       }
+      this.circulo1 = e.target.id()
+      console.log(this.circulo1)
+      console.log(this.inicio)
+      if(this.circulo1 == 112 ){
+        this.inicio = true
+
+      }
+      if(this.circulo1 != 112 && this.inicio == false){
+        return;
+      }
+
       this.drawningLine = true;
       console.log(Math.round((Math.sin(90 * Math.PI / 180))))
       console.log(Math.round((Math.cos(90 * Math.PI / 180))))
       console.log('id: '+e.target.id())
-      this.circulo1 = e.target.id()
+
+      
       this.connections.push({
         id: Date.now(),
         points: [(e.target.x()), (e.target.y())]
@@ -450,13 +464,13 @@ console.log('cos: '+r)
     enviarData: function (event) {
       this.tiempoF = Date.now();
         var tI = new Date(this.tiempoI);
-        var tf = new Date(this.tiempof);
-        var tt = new Date(this.tiempoF-this.tiempoI);
+        var tf = new Date(this.tiempoF);
+        var tt = this.tiempoF-this.tiempoI;
 this.aspectos = document.getElementById("aspectos").value; 
         this.sustentar = document.getElementById("sustentar").value; 
         this.ident = document.getElementById("ident").value; 
         var rutaT = this.getRuta()
-        this.addRow(1,rutaT,1,1,tt,1,tI,tf,this.getMatrizT(),1,this.validarSolucion())
+        this.addRow(1,rutaT,1,1,tt/1000,1,tI.toUTCString(),tf.toUTCString(),this.getMatrizT(),1,this.validarSolucion())
         this.sendRow()
         if (event) {
         alert('Se añadio la respuesta')

@@ -81,6 +81,7 @@
           outlined
           tile
           height="600px"
+          id="bloque2"
 
         >
         </v-card>
@@ -414,28 +415,30 @@ export default {
         ((this.posiciones['b4'][1]-this.posiciones['b2'][1]<70 && this.posiciones['b4'][1]-this.posiciones['b2'][1]>0 )||(this.posiciones['b4'][1]-this.posiciones['b2b'][1]<70 && this.posiciones['b4'][1]-this.posiciones['b2b'][1]>0 ))&&
         this.posiciones['b3'][1]-this.posiciones['b4'][1]<70 && this.posiciones['b3'][1]-this.posiciones['b4'][1]>0
       ){
+        var element3 = document.getElementById('bloque2')
+      var rect3 = element3.getBoundingClientRect();
               val = true
               this.cum = 'si'
 
-              if(this.posiciones['b9'][0]>575){
+              if(this.posiciones['b9'][0]>rect3.left - 78){
                 this.for = this.for + 1 
               }
-              if(this.posiciones['b8'][0]>575){
+              if(this.posiciones['b8'][0]>rect3.left - 78){
                 this.cond = this.cond + 1 
               }
-              if(this.posiciones['b3'][0]>575 ){
+              if(this.posiciones['b3'][0]>rect3.left - 78 ){
                 this.dir = this.dir + 1 
               }
-              if(this.posiciones['b2'][0]>575){
+              if(this.posiciones['b2'][0]>rect3.left - 78){
                 this.dir = this.dir + 1 
               }
-              if(this.posiciones['b4'][0]>575){
+              if(this.posiciones['b4'][0]>rect3.left - 78){
                 this.dir = this.dir + 1 
               }
-              if(this.posiciones['b5'][0]>575){
+              if(this.posiciones['b5'][0]>rect3.left - 78){
                 this.dir = this.dir + 1 
               }
-              if(this.posiciones['b2b'][0]>575){
+              if(this.posiciones['b2b'][0]>rect3.left - 78){
                 this.dir = this.dir + 1 
               }
               
@@ -451,9 +454,32 @@ export default {
 
 
       ){
+        var element2 = document.getElementById('bloque2')
+      var rect2 = element2.getBoundingClientRect();
               console.log('correcto')
               val = true
               this.cum = 'si'
+              if(this.posiciones['b9'][0]>rect2.left - 78){
+                this.for = this.for + 1 
+              }
+              if(this.posiciones['b8'][0]>rect2.left - 78){
+                this.cond = this.cond + 1 
+              }
+              if(this.posiciones['b3'][0]>rect2.left - 78 ){
+                this.dir = this.dir + 1 
+              }
+              if(this.posiciones['b2'][0]>rect2.left - 78){
+                this.dir = this.dir + 1 
+              }
+              if(this.posiciones['b4'][0]>rect2.left - 78){
+                this.dir = this.dir + 1 
+              }
+              if(this.posiciones['b5'][0]>rect2.left - 78){
+                this.dir = this.dir + 1 
+              }
+              if(this.posiciones['b2b'][0]>rect2.left - 78){
+                this.dir = this.dir + 1 
+              }
 
 
 
@@ -469,6 +495,29 @@ export default {
               val = true
               this.cum = 'si'
               this.opt = 'si'
+              var element = document.getElementById('bloque2')
+      var rect = element.getBoundingClientRect();
+              if(this.posiciones['b9'][0]>rect.left - 78){
+                this.for = this.for + 1 
+              }
+              if(this.posiciones['b8'][0]>rect.left - 78){
+                this.cond = this.cond + 1 
+              }
+              if(this.posiciones['b3'][0]>rect.left - 78 ){
+                this.dir = this.dir + 1 
+              }
+              if(this.posiciones['b2'][0]>rect.left - 78){
+                this.dir = this.dir + 1 
+              }
+              if(this.posiciones['b4'][0]>rect.left - 78){
+                this.dir = this.dir + 1 
+              }
+              if(this.posiciones['b5'][0]>rect.left - 78){
+                this.dir = this.dir + 1 
+              }
+              if(this.posiciones['b2b'][0]>rect.left - 78){
+                this.dir = this.dir + 1 
+              }
 
 
 
@@ -584,9 +633,12 @@ export default {
       
       console.log(event.target.id)
       this.tempArriba = event.target.id
+      var element = document.getElementById('bloque2')
+      var rect = element.getBoundingClientRect();
+      console.log(rect.top, rect.right, rect.bottom, rect.left);
       if(this.tempAbajo ==  this.tempArriba){
 
-        if(this.posiciones[this.tempArriba][0]>575 && this.xtemp){
+        if(this.posiciones[this.tempArriba][0]>rect.left - 78 && this.xtemp< rect.left - 78){
           this.dev = this.dev + 1
           console.log(this.dev)
 
@@ -594,7 +646,7 @@ export default {
       this.posiciones[this.tempArriba][0]=this.xtemp
       this.posiciones[this.tempArriba][1]=this.ytemp
       }else{
-        if(this.posiciones[this.tempArriba][0]>575 && this.xtemp){
+        if(this.posiciones[this.tempArriba][0]> rect.left - 78 &&  this.xtemp< rect.left - 78){
           this.dev = this.dev + 1
           console.log(this.dev)
         }

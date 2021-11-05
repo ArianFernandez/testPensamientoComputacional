@@ -160,7 +160,7 @@
           <v-btn
             color="green darken-1"
             text
-            @click="pasaPregunta"
+            @click="intentar"
           >
             Intentar <br> denuevo
           </v-btn>
@@ -229,13 +229,13 @@ function generateTargets() {
 
     {x:200,y:50,id:1,color:'green',con:{3:5},puntosBorde:[]},
     {x:400,y:50,id:2,color:'green',con:{112:10,3:1,5:1,6:3},puntosBorde:[]},
-    {x:600,y:50,id:3,color:'green',con:{112:5,2:1,4:1,10:10},puntosBorde:[]},
+    {x:600,y:50,id:3,color:'red',con:{112:5,2:1,4:1,10:10},puntosBorde:[]},
     {x:200,y:200,id:4,color:'green',con:{3:1,7:3,9:5},puntosBorde:[]},
     {x:400,y:200,id:112,color:'blue',con:{112:3,2:1,8:5},puntosBorde:[]},
     {x:600,y:200,id:6,color:'green',con:{2:3,3:1,5:5},puntosBorde:[]},
     {x:200,y:350,id:7,color:'green',con:{3:3,4:3,9:1,10:10},puntosBorde:[]},
     {x:400,y:350,id:8,color:'green',con:{5:5,6:5,10:3},puntosBorde:[]},
-    {x:600,y:350,id:9,color:'red',con:{5:5,6:5,10:3},puntosBorde:[]}
+    {x:600,y:350,id:9,color:'green',con:{5:5,6:5,10:3},puntosBorde:[]}
 
   ];
 
@@ -556,9 +556,9 @@ this.aspectos = document.getElementById("aspectos").value;
     },
     intentar(){
         this.errores +=1
-      this.tiempoI = Date.now();
 
         this.dialog = false
+        this.cleanRoute()
     },
     guardar(){
 

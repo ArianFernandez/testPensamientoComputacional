@@ -129,13 +129,41 @@
       dark
       outlined
       
-      v-on:click="validarSolucion"
+      v-on:click="siguiente"
     >
       Siguiente
     </v-btn>
   </div>
         </v-card>
       </v-col>
+      <v-dialog
+      v-model="dialog"
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="text-h5">
+          Finalizaste
+        </v-card-title>
+
+        <v-card-text>
+         Muchas gracias por participar
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="salir"
+          >
+            Ok
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     </v-row>
 
@@ -178,6 +206,8 @@ export default {
     pressedC:false,
     pressedP:false,
     pressedM:false,
+    opt:'no',
+    dialog: false
 
     }},
 
@@ -204,11 +234,21 @@ export default {
 
       
     },
+    salir(){
+        
+        window.location.href = '/' 
+
+    },
     validarSolucion(){
         this.aspectos = document.getElementById("aspectos").value; 
         this.sustentar = document.getElementById("sustentar").value; 
 
+        if(this.eleccion == 'pacman'){
+          this.opt = 'si'
+        }else{
+          this.opt = 'no'
 
+        }
         this.addRow()
         this.sendRow()
     },
@@ -225,7 +265,12 @@ export default {
        const moreRows =  sheet2.addRows(this.respuestas)
         console.log(moreRows)
     },
+    siguiente(){
+        this.dialog =  true
+    },
         addRow(){
+
+        
         this.respuestas.push({ 
           escenario: 2,
           pregunta: 3,
@@ -236,7 +281,7 @@ export default {
           ruta: 'x',
           matriz: 'x',
           cumplio: this.eleccion,
-          optima:this.eleccion,
+          optima:this.opt ,
           identProblema: 'x',
           aspectos: this.aspectos,
           sustentar: this.sustentar,
