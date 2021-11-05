@@ -67,17 +67,21 @@
           outlined
           tile
         >
-        <v-textarea
-          name="input-7-1"
-          id="ip"
-          label="Identificacion del problema"
-          value=""
-        ></v-textarea>
+        
                 <v-textarea
           name="input-7-1"
           id="aspectos"
+          background-color="amber lighten-4"
 
           label="Aspectos Importantes"
+          value=""
+        ></v-textarea>
+        <v-textarea
+          name="input-7-1"
+          id="ip"
+          background-color="light-blue lighten-4"
+
+          label="Sustentar"
           value=""
         ></v-textarea>
             <v-btn
@@ -467,9 +471,9 @@ export default {
           matriz: matriz,
           cumplio: nodoF,
           optima: vPeso,
-          identProblema: ip,
+          identProblema: '-',
           aspectos: aspectos,
-          sustentar: this.sustentar,
+          sustentar: ip,
           probado: '-',
           devuelvo: '-',
           direccion: '-',

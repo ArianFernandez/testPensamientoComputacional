@@ -104,6 +104,7 @@
     <v-textarea
           name="input-7-1"
           id="aspectos"
+          background-color="amber lighten-4"
 
           label="Aspectos Importantes"
           value=""
@@ -111,6 +112,7 @@
         <v-textarea
           name="input-7-1"
           id="sustentar"
+          background-color="light-blue lighten-4"
 
           label="Sustentar solucion"
           value=""

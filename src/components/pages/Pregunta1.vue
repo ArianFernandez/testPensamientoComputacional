@@ -77,7 +77,7 @@
                 <v-textarea
           name="input-7-1"
           id="aspectos"
-
+          background-color="amber lighten-4"
           label="Aspectos Importantes"
           value=""
         ></v-textarea>
@@ -487,9 +487,9 @@ export default {
           matriz: matriz,
           cumplio: nodoF,
           optima: vPeso,
-          identProblema: ip,
+          identProblema: '-',
           aspectos: aspectos,
-          sustentar: 'saf',
+          sustentar: '-',
           probado: '-',
           devuelvo: '-',
           direccion: '-',
