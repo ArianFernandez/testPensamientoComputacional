@@ -150,6 +150,34 @@
     </v-btn>
         </v-card>
       </v-col>
+      <v-dialog
+      v-model="dialog"
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="text-h5">
+          Ups!
+        </v-card-title>
+
+        <v-card-text>
+         Camino incorrecto
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="intentar"
+          >
+            Intentar <br> denuevo
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     </v-row>
   </v-container>
   </v-app>
@@ -256,6 +284,7 @@ export default{
       rutaMatriz:[],
       tiempoI: 0,
       tiempoF: 0,
+      dialog: false,
       tiMatriz:0,
       aspectos:'',
     sustentar:'',
@@ -267,7 +296,8 @@ export default{
       rutaTemp:[112],
       cump: 'no',
       id:this.$route.params.id,
-      inicio: false
+      inicio: false,
+      errores: 0
 
   }},
 
@@ -301,6 +331,20 @@ export default{
       });
 
       this.tiMatriz = Date.now();
+
+    },
+   
+    intentar(){
+      this.dialog = false
+      this.cleanRoute()
+    },
+    cleanRoute(){
+        this.connections = []
+        this.conexiones = []
+        this.pesos = []
+        this.ruta = []
+        this.rutaMatriz = []
+        this.rutaTemp = [112]
 
     },
     submit () {
@@ -361,6 +405,7 @@ console.log('cos: '+r)
         this.matrizT.push(tiempoTotal)
 
     this.rutaTemp.push(this.circulo2)
+    this.validarSolucion()
 
 
     },
@@ -434,7 +479,7 @@ console.log('cos: '+r)
           identProblema: this.ident,
           aspectos: this.aspectos,
           sustentar: this.sustentar,
-          errores: "-",
+          errores: this.errores,
           probado: '-',
           devuelvo: '-',
           direccion: '-',
@@ -474,7 +519,7 @@ this.aspectos = document.getElementById("aspectos").value;
         this.addRow(1,rutaT,1,1,tt/1000,1,tI.toUTCString(),tf.toUTCString(),this.getMatrizT(),1,this.validarSolucion())
         this.sendRow()
         if (event) {
-        alert('Se añadio la respuesta')
+        alert('Se guardo la respuesta')
       }
     },
     startTimer: function() {
@@ -496,8 +541,10 @@ this.aspectos = document.getElementById("aspectos").value;
       console.log(this.rutaCorrecta)
 
       var val = 'si'
-      for (var i = 0; i < this.rutaCorrecta.length ; i++) {
+      for (var i = 0; i < this.rutaTemp.length ; i++) {
           if(this.rutaTemp[i] != this.rutaCorrecta[i]){
+            this.errores = this.errores + 1
+            this.dialog = true
               val = 'no'
      }
         }
