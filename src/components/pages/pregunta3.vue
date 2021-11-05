@@ -247,7 +247,6 @@ export default {
         let aspectos = document.getElementById("aspectos").value; 
         var tI = new Date(this.tiempoI);
         var tF = new Date(this.tiempoF);
-        this.sustentar = document.getElementById("sustentar").value; 
 
         this.addRow(errorT,pesoT,rutaT,value,aspectos, this.tiempoT/1000,this.contador,tI.toString(), tF.toString(),matrizT,this.validarPeso(),this.validarNodoFinal())
         this.cleanRoute()
